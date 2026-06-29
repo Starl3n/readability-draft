@@ -22,8 +22,6 @@ author:
     email: "thom@commoncrawl.org"
 
 normative:
-  RFC2119:
-  RFC8174:
   RFC9309:
 
 informative:
