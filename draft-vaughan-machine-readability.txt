@@ -457,7 +457,7 @@ Table of Contents
 
 7.  Security Considerations
 
-   TODO Spoofing, provenance, downgrade, etc.  BCP47 stuff maybe.
+   TODO Spoofing, provenance, downgrade, etc.  BCP14 stuff maybe.
 
 8.  IANA Considerations
 
