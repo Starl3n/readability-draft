@@ -200,7 +200,7 @@ The Coalition for Content Provenance and Authenticity (C2PA) {{C2PA}} is unlike 
 
 # Security Considerations
 
-TODO Spoofing, provenance, downgrade, etc.  BCP47 stuff maybe.
+TODO Spoofing, provenance, downgrade, etc.  BCP14 stuff maybe.
 
 # IANA Considerations
 
