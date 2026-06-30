@@ -164,7 +164,7 @@ Table of Contents
    (interpretable) is of little utility if an Agent cannot find it
    (discoverable).  For expository purposes this document treats the
    rungs as cumulative.  They are not, however, strictly dependent, and
-   the Section 4 section describes the cases in which they come apart.
+   Section 4 describes the cases in which they come apart.
 
    An Expression should have the following properties:
 
@@ -249,7 +249,8 @@ Table of Contents
 
    The properties of Section 3 are general, but legal terms of service
    are where the gap between the lower and higher rungs is widest.
-   Terms are easy to publish in a parseable form, but in most cases they
+   Terms are easy to publish in a parseable form, and may even reach
+   Section 3.3, but in most cases they stop short of Section 3.4: they
    cannot be acted upon without a human to interpret them.  A document
    may be structurally sound, valid against a schema, and served from a
    location an Agent can discover, and still offer that Agent no
@@ -443,17 +444,17 @@ Table of Contents
    that any later alteration of the content or the manifest can be
    detected.  This is genuine verifiability of a kind none of the others
    provide.  It is worth being precise, though, about which part of
-   verifiability it delivers.  The Section 3.5 rung as defined here
-   asserts that an Expression has not been altered, and that it
-   genuinely originates from a party authorised to make the assertion.
-   C2PA answers the first part cleanly.  The second is only answered
-   halfway, in that it establishes that a particular signer made the
-   assertion and that the assertion is unchanged since, but not that the
-   assertion is true, nor that the signer had any standing to make it.
-   As C2PA's own materials put it, it proves who signed a claim, not
-   whether the claim is true.  The integrity limb is solved; the
-   authority limb, who is entitled to speak for the Resource, is left
-   where the other mechanisms leave it.
+   verifiability it delivers.  The verifiable rung (Section 3.5) as
+   defined here asserts that an Expression has not been altered, and
+   that it genuinely originates from a party authorised to make the
+   assertion.  C2PA answers the first part cleanly.  The second is only
+   answered halfway, in that it establishes that a particular signer
+   made the assertion and that the assertion is unchanged since, but not
+   that the assertion is true, nor that the signer had any standing to
+   make it.  As C2PA's own materials put it, it proves who signed a
+   claim, not whether the claim is true.  The integrity limb is solved;
+   the authority limb, who is entitled to speak for the Resource, is
+   left where the other mechanisms leave it.
 
 7.  Security Considerations
 
