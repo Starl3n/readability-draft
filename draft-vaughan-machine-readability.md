@@ -125,23 +125,23 @@ Declaring Party:
 
 # A Ladder of Machine Readability {#ladder}
 
-The properties below are presented as a ladder, from least to most demanding, because each higher rung is most useful when the rungs beneath it also hold.  An Expression whose meaning is fixed (interpretable) is of little utility if an Agent cannot find it (discoverable).  For expository purposes this document treats the rungs as cumulative.  They are not, however, strictly dependent, and the {{separability}} section describes the cases in which they come apart.
+The properties below are presented as a ladder, from least to most demanding, because each higher rung is most useful when the rungs beneath it also hold.  An Expression whose meaning is fixed (interpretable) is of little utility if an Agent cannot find it (discoverable).  For expository purposes this document treats the rungs as cumulative.  They are not, however, strictly dependent, and {{separability}} describes the cases in which they come apart.
 
 An Expression should have the following properties:
 
-## Discoverable
+## Discoverable {#discoverable}
 
 An Expression is discoverable if an Agent can locate it from the Resource, or from the act of acquiring the Resource, without out-of-band knowledge specific to the Declaring Party. A test would be whether the Agent can find the Expression, when given only the Resource's identifier and a general method.  A robots.txt file passes this test (fixed path, fetched first).  A terms page linked only from a human-readable footer fails.  The "without out-of-band knowledge" clause is what excludes something like "email us for our API terms".
 
-## Parseable
+## Parseable {#parseable}
 
 An Expression is parseable if its syntax is defined such that a conforming Agent recovers the same structured representation from it that any other conforming Agent would.  A test for this would be whether there is a grammar or schema against which the Expression is valid or invalid, deterministically.  ToS-in-JSON passes this test but, crucially, usually no higher one.  This characteristic is the one most often mistaken for machine readability as a whole.
 
-## Interpretable
+## Interpretable {#interpretable}
 
 An Expression is interpretable if the meaning of its parsed elements is fixed against a shared, identified vocabulary, such that two conforming Agents assign the same meaning to the same element.  A test for this is whether each term is resolvable to a definition that is itself machine-identified, (like a URI or a registry entry) rather than relying on the Agent's own natural-language understanding.  This characteristic separates something like a JSON field called "may_train" (whose meaning is whatever a reader guesses) from AIPREF's train-ai, whose meaning is pinned to a specification.
 
-## Actionable
+## Actionable {#actionable}
 
 An Expression is actionable if an interpretable Expression additionally determines, for the Agent's purposes, a definite outcome (like "permitted", "forbidden", or something like "conditional-based-on-a-checkable-condition") without recourse to a human.  A test for this could be whether the Agent can map the interpreted Expression onto its specific pending action and get an answer.  An Expression that says "use must be fair" is interpretable but admits no definite outcome, because 'fair' is not a checkable condition.  One that says "training forbidden" is actionable against the action "train".
 
@@ -149,20 +149,20 @@ An Expression is actionable if an interpretable Expression additionally determin
 
 An Expression is verifiable if an Agent can establish that it genuinely originates from a party authorised to make assertions about the Resource, and that it has not been altered.  A test for this could be whether there is a mechanism binding the Expression to an authorised Declaring Party and detecting tampering.
 
-# Separability
+# Separability {#separability}
 
 The ladder metaphor is an expository convenience, and not a claim that each characteristic actually strictly entails the ones below it.  Real Expressions satisfy these properties in patches.
 The Robots Exclusion Protocol {{RFC9309}} is both highly discoverable and parseable.  It is fetched from a fixed location before any other resource, and its grammar is defined in ABNF.  It is deliberately not interpretable in the rich sense used here, because its vocabulary is confined to access control (allow and disallow against paths) and carries no shared semantics for what an Agent may do with content once fetched.  It provides no verifiability whatsoever and trust derives entirely from the authority of the server.
 Conversely, a cryptographic provenance Expression may be verifiable and parseable while saying nothing about usage permissions at all, and so contribute nothing on the actionable rung for a usage decision.
 An Expression may, therefore, occupy a high rung while failing a lower one, or satisfy a lower rung richly while being absent higher up.  The value of the ladder is diagnostic in that it lets one state precisely which property a given mechanism provides and, more importantly, which it does not, rather than asserting that a mechanism is or is not "machine readable" as an undifferentiated whole.
 
-# Requirements for Legal Terms
+# Requirements for Legal Terms {#requirements-for-legal-terms}
 
-The properties of {{ladder}} are general, but legal terms of service are where the gap between the lower and higher rungs is widest.  Terms are easy to publish in a parseable form, but in most cases they cannot be acted upon without a human to interpret them.  A document may be structurally sound, valid against a schema, and served from a location an Agent can discover, and still offer that Agent no machine-determinable answer to the one question it actually has, which is whether the action it is about to take is permitted.
+The properties of {{ladder}} are general, but legal terms of service are where the gap between the lower and higher rungs is widest.  Terms are easy to publish in a parseable form, and may even reach {{interpretable}}, but in most cases they stop short of {{actionable}}: they cannot be acted upon without a human to interpret them.  A document may be structurally sound, valid against a schema, and served from a location an Agent can discover, and still offer that Agent no machine-determinable answer to the one question it actually has, which is whether the action it is about to take is permitted.
 At crawl scale this ceases to be a nuisance and becomes a barrier.  An Agent operating across the web encounters resources in numbers that make per-resource interpretation of natural-language terms infeasible as part of fetching them.  No stage of a crawl pipeline can read a terms-of-service document, written for human readers and varying from one site to the next, quickly enough, reliably enough, and cheaply enough to decide the fetch.  A mechanism that demands this does not describe a workable system.  It describes a human reading legalese, repeated some billions of times.
 It is sometimes proposed that a large language model (LLM) could close the gap, reading the terms at scale and reporting what they permit.  Such an approach must not be relied upon for usage decisions.  A language model does not determine what a document permits.  It produces text resembling that determination, and it does so with a well-documented tendency to hallucinate or fabricate.  A crawler that fetches or declines a Resource on the strength of a model's reading of prose is making an access decision from output that may be confidently wrong, and cannot be checked against the source without the very human reading it was meant to replace.  Wrapping the prose in a structured form changes none of this.  The wrapper is parseable, but it does not render the terms inside it actionable.
 
-# Relationship to Existing Work
+# Relationship to Existing Work {#existing}
 
 The mechanisms surveyed below each address some part of the problem this document frames, and none addresses all of it.  They are described here in terms of what they do and where they sit against the properties of {{ladder}}, not to rank them, but to show that the framework describes existing work rather than displacing it.
 
@@ -196,7 +196,7 @@ Schema.org {{SCHEMA-ORG}} is a vocabulary of structured-data terms embedded in w
 
 ## C2PA
 
-The Coalition for Content Provenance and Authenticity (C2PA) {{C2PA}} is unlike everything else surveyed here, because it is not a usage-preference or rights mechanism at all but a provenance one, and it is the only mechanism in the survey that answers the verifiability rung.  C2PA binds a cryptographically signed manifest to a digital asset, recording assertions about the asset's origin and editing history; the signature and a hash binding make the manifest tamper-evident, so that any later alteration of the content or the manifest can be detected.  This is genuine verifiability of a kind none of the others provide.  It is worth being precise, though, about which part of verifiability it delivers.  The {{verifiable}} rung as defined here asserts that an Expression has not been altered, and that it genuinely originates from a party authorised to make the assertion.  C2PA answers the first part cleanly.  The second is only answered halfway, in that it establishes that a particular signer made the assertion and that the assertion is unchanged since, but not that the assertion is true, nor that the signer had any standing to make it.  As C2PA's own materials put it, it proves who signed a claim, not whether the claim is true.  The integrity limb is solved; the authority limb, who is entitled to speak for the Resource, is left where the other mechanisms leave it.
+The Coalition for Content Provenance and Authenticity (C2PA) {{C2PA}} is unlike everything else surveyed here, because it is not a usage-preference or rights mechanism at all but a provenance one, and it is the only mechanism in the survey that answers the verifiability rung.  C2PA binds a cryptographically signed manifest to a digital asset, recording assertions about the asset's origin and editing history; the signature and a hash binding make the manifest tamper-evident, so that any later alteration of the content or the manifest can be detected.  This is genuine verifiability of a kind none of the others provide.  It is worth being precise, though, about which part of verifiability it delivers.  The verifiable rung ({{verifiable}}) as defined here asserts that an Expression has not been altered, and that it genuinely originates from a party authorised to make the assertion.  C2PA answers the first part cleanly.  The second is only answered halfway, in that it establishes that a particular signer made the assertion and that the assertion is unchanged since, but not that the assertion is true, nor that the signer had any standing to make it.  As C2PA's own materials put it, it proves who signed a claim, not whether the claim is true.  The integrity limb is solved; the authority limb, who is entitled to speak for the Resource, is left where the other mechanisms leave it.
 
 # Security Considerations
 
