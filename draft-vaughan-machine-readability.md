@@ -76,6 +76,15 @@ informative:
     author:
       - org: Schema.org
 
+  DCTERMS:
+    target: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+    title: "DCMI Metadata Terms"
+    author:
+      - org: Dublin Core Metadata Initiative
+    date: 2020-01-20
+    seriesinfo:
+      DCMI: Recommendation
+
   C2PA:
     target: https://c2pa.org/specifications/
     title: "Coalition for Content Provenance and Authenticity (C2PA) Technical Specification"
@@ -100,7 +109,7 @@ usage preferences and legal terms of service.
 # Introduction {#introduction}
 
 Expressions of how content may be used by automated systems are increasingly published in forms described as "machine readable".  Operators of crawlers and other automated Agents are expected to discover these Expressions, determine what they permit or forbid, and act accordingly.  The term "machine readable" is invoked frequently in this context, in standards work, in policy, and in legislation, but it is rarely defined with enough precision to tell an implementer whether a given Expression actually supports automated action.
-The difficulty is that "machine readable" names several distinct properties that are commonly conflated. An Expression may be serialised in a structured syntax, and so be straightforward for a program to parse, while still conveying nothing a program can act upon.  A terms-of-service document placed verbatim in a JSON string is structurally parseable but no more actionable than the same text in a web page.  Conversely, an Expression may be richly actionable yet undiscoverable, or trivially discoverable yet unverifiable.  Treating "machine readable" as a single binary property obscures these differences and permits a Declaring Party to claim machine readability on the strength of the least demanding property while failing the ones that matter for automated action.
+The difficulty is that "machine readable" names several distinct properties that are commonly conflated. An Expression may be serialised in a structured syntax, and so be straightforward for a program to parse, while still conveying nothing a program can act upon.  A terms-of-service document placed verbatim in a JSON string sits inside a parseable envelope, but the terms themselves parse no better than the same text in a web page.  What a conforming Agent recovers is a string of legalese, not a structured representation of anything upon which it can act.  Conversely, an Expression may be richly actionable yet undiscoverable, or trivially discoverable yet unverifiable.  Treating "machine readable" as a single binary property obscures these differences, and permits a Declaring Party to claim machine readability on the strength of the least demanding property while failing the ones that actually matter for automated action.
 This document separates "machine readable" into five properties: an Expression may be discoverable, parseable, interpretable, actionable, and verifiable.  These are defined in {{terminology}} and {{ladder}}.  They are presented as a ladder, from least to most demanding, but they do not strictly entail one another, and {{separability}} sets out how they come apart in practice.  The purpose of the framework is diagnostic: it allows a given mechanism to be described in terms of precisely which properties it provides, rather than asserted to be machine readable as an undifferentiated whole.
 The framework is general, but this document applies it in particular to two cases: the expression of usage preferences for automated processing, and the expression of legal terms of service.  The latter is treated at length in {{requirements-for-legal-terms}}, because legal text exposes the gap between the lower and higher rungs most sharply.  Terms that are easy to publish in a structured form are frequently impossible to act upon without human interpretation.
 This document does not define a vocabulary, a syntax, or a protocol, and it is not a product of any IETF working group.  It does not propose that any existing mechanism be changed.  Its contribution is a set of definitions against which existing and future mechanisms can be assessed.
@@ -135,7 +144,7 @@ An Expression is discoverable if an Agent can locate it from the Resource, or fr
 
 ## Parseable {#parseable}
 
-An Expression is parseable if its syntax is defined such that a conforming Agent recovers the same structured representation from it that any other conforming Agent would.  A test for this would be whether there is a grammar or schema against which the Expression is valid or invalid, deterministically.  ToS-in-JSON passes this test but, crucially, usually no higher one.  This characteristic is the one most often mistaken for machine readability as a whole.
+An Expression is parseable if its syntax is defined such that a conforming Agent recovers the same structured representation from it that any other conforming Agent would.  A test for this would be whether there is a grammar or schema against which the Expression is valid or invalid, deterministically.  A terms-of-service document carried in a JSON string is a useful case about which to be precise: the JSON envelope is valid against a grammar and every conforming Agent recovers the same envelope, but the terms inside it recover only as an opaque string, with no grammar of their own.  Wrapping prose in a parseable container does not make the prose parseable, and this is the characteristic most often mistaken for machine readability as a whole.
 
 ## Interpretable {#interpretable}
 
@@ -193,6 +202,10 @@ The TDM Reservation Protocol (TDMRep) {{TDMREP}}, a W3C Community Group Final Re
 ## Schema.org
 
 Schema.org {{SCHEMA-ORG}} is a vocabulary of structured-data terms embedded in web pages, maintained by a community backed by the major search engines rather than published as a standard.  Among its terms are several concerned with rights: `license`, `usageInfo`, `acquireLicensePage`, and others, attached to a described work.  These are the closest thing to a usage signal that a great many sites already publish, which is what makes schema.org the sharpest illustration of the distinction that this document draws.  The license property is defined as "a license document that applies to this content, typically indicated by URL", and that phrase is the whole difficulty in miniature.  A schema.org licence annotation is reliably discoverable and parseable, and where the URL it carries is a recognised licence with fixed meaning, for instance a specific Creative Commons licence, it is interpretable too.  But where the URL points to a publisher's own licence page written in prose, the structured part of the chain ends at that link, and what waits on the other side is exactly the human-readable document that {{requirements-for-legal-terms}} describes.  It is parseable to reach, not actionable once reached.  Schema.org is structured data that can carry an actionable signal or a mere pointer to prose with equal ease, and nothing in the markup itself tells an Agent which it has been handed.  It provides, like the others, no means to verify who published the annotation.  It is the case that most tempts the conflation mentioned above in {{introduction}}, where being structured is mistaken for being machine-readable in the sense that actually matters.
+
+## Dublin Core
+
+The Dublin Core metadata terms {{DCTERMS}}, maintained by the Dublin Core Metadata Initiative and standardised as ISO 15836, are a general-purpose vocabulary for describing resources of any kind.  Among the terms are two concerned with rights: `dcterms:rights`, defined as information about rights held in and over the resource, and `dcterms:license`, a sub-property defined as a legal document giving official permission to do something with the resource.  Like schema.org and CC REL, Dublin Core is a way of attaching a rights value to a described work rather than a policy language in its own right, and it sits on the ladder in much the same place.  Where the value of `dcterms:license` is a URI resolving to a licence of fixed meaning, the annotation is interpretable; where it is a free-text statement of rights, as `dcterms:rights` commonly is, it reaches no further than parseable, and a consuming Agent is left stuck with a string it can't resolve.  Dublin Core's own guidance is very open about this, noting that a bare URI recorded as a value string gives a consuming application no reliable way to tell it apart from any other string and so to treat it as an identifier.  It provides, like the other embedded-metadata schemes, provenance (in the weak sense of recorded attribution) but no means to verify that a rights statement is authentic or unaltered.
 
 ## C2PA
 
