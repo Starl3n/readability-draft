@@ -4,8 +4,8 @@
 
 Network Working Group                                         T. Vaughan
 Internet-Draft                                   Common Crawl Foundation
-Intended status: Informational                              30 June 2026
-Expires: 1 January 2027
+Intended status: Informational                               2 July 2026
+Expires: 3 January 2027
 
 
 Defining Machine Readability for Usage Preferences and Policy Expression
@@ -48,7 +48,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 January 2027.
+   This Internet-Draft will expire on 3 January 2027.
 
 Copyright Notice
 
@@ -82,7 +82,8 @@ Table of Contents
      6.5.  CC REL
      6.6.  TDMRep
      6.7.  Schema.org
-     6.8.  C2PA
+     6.8.  Dublin Core
+     6.9.  C2PA
    7.  Security Considerations
    8.  IANA Considerations
    9.  References
@@ -106,33 +107,35 @@ Table of Contents
    serialised in a structured syntax, and so be straightforward for a
    program to parse, while still conveying nothing a program can act
    upon.  A terms-of-service document placed verbatim in a JSON string
-   is structurally parseable but no more actionable than the same text
-   in a web page.  Conversely, an Expression may be richly actionable
-   yet undiscoverable, or trivially discoverable yet unverifiable.
-   Treating "machine readable" as a single binary property obscures
-   these differences and permits a Declaring Party to claim machine
-   readability on the strength of the least demanding property while
-   failing the ones that matter for automated action.  This document
-   separates "machine readable" into five properties: an Expression may
-   be discoverable, parseable, interpretable, actionable, and
-   verifiable.  These are defined in Section 2 and Section 3.  They are
-   presented as a ladder, from least to most demanding, but they do not
-   strictly entail one another, and Section 4 sets out how they come
-   apart in practice.  The purpose of the framework is diagnostic: it
-   allows a given mechanism to be described in terms of precisely which
-   properties it provides, rather than asserted to be machine readable
-   as an undifferentiated whole.  The framework is general, but this
-   document applies it in particular to two cases: the expression of
-   usage preferences for automated processing, and the expression of
-   legal terms of service.  The latter is treated at length in
-   Section 5, because legal text exposes the gap between the lower and
-   higher rungs most sharply.  Terms that are easy to publish in a
-   structured form are frequently impossible to act upon without human
-   interpretation.  This document does not define a vocabulary, a
-   syntax, or a protocol, and it is not a product of any IETF working
-   group.  It does not propose that any existing mechanism be changed.
-   Its contribution is a set of definitions against which existing and
-   future mechanisms can be assessed.
+   sits inside a parseable envelope, but the terms themselves parse no
+   better than the same text in a web page.  What a conforming Agent
+   recovers is a string of legalese, not a structured representation of
+   anything upon which it can act.  Conversely, an Expression may be
+   richly actionable yet undiscoverable, or trivially discoverable yet
+   unverifiable.  Treating "machine readable" as a single binary
+   property obscures these differences, and permits a Declaring Party to
+   claim machine readability on the strength of the least demanding
+   property while failing the ones that actually matter for automated
+   action.  This document separates "machine readable" into five
+   properties: an Expression may be discoverable, parseable,
+   interpretable, actionable, and verifiable.  These are defined in
+   Section 2 and Section 3.  They are presented as a ladder, from least
+   to most demanding, but they do not strictly entail one another, and
+   Section 4 sets out how they come apart in practice.  The purpose of
+   the framework is diagnostic: it allows a given mechanism to be
+   described in terms of precisely which properties it provides, rather
+   than asserted to be machine readable as an undifferentiated whole.
+   The framework is general, but this document applies it in particular
+   to two cases: the expression of usage preferences for automated
+   processing, and the expression of legal terms of service.  The latter
+   is treated at length in Section 5, because legal text exposes the gap
+   between the lower and higher rungs most sharply.  Terms that are easy
+   to publish in a structured form are frequently impossible to act upon
+   without human interpretation.  This document does not define a
+   vocabulary, a syntax, or a protocol, and it is not a product of any
+   IETF working group.  It does not propose that any existing mechanism
+   be changed.  Its contribution is a set of definitions against which
+   existing and future mechanisms can be assessed.
 
 1.1.  Requirements Language
 
@@ -185,9 +188,14 @@ Table of Contents
    conforming Agent recovers the same structured representation from it
    that any other conforming Agent would.  A test for this would be
    whether there is a grammar or schema against which the Expression is
-   valid or invalid, deterministically.  ToS-in-JSON passes this test
-   but, crucially, usually no higher one.  This characteristic is the
-   one most often mistaken for machine readability as a whole.
+   valid or invalid, deterministically.  A terms-of-service document
+   carried in a JSON string is a useful case about which to be precise:
+   the JSON envelope is valid against a grammar and every conforming
+   Agent recovers the same envelope, but the terms inside it recover
+   only as an opaque string, with no grammar of their own.  Wrapping
+   prose in a parseable container does not make the prose parseable, and
+   this is the characteristic most often mistaken for machine
+   readability as a whole.
 
 3.3.  Interpretable
 
@@ -432,7 +440,31 @@ Table of Contents
    Section 1, where being structured is mistaken for being machine-
    readable in the sense that actually matters.
 
-6.8.  C2PA
+6.8.  Dublin Core
+
+   The Dublin Core metadata terms [DCTERMS], maintained by the Dublin
+   Core Metadata Initiative and standardised as ISO 15836, are a
+   general-purpose vocabulary for describing resources of any kind.
+   Among the terms are two concerned with rights: dcterms:rights,
+   defined as information about rights held in and over the resource,
+   and dcterms:license, a sub-property defined as a legal document
+   giving official permission to do something with the resource.  Like
+   schema.org and CC REL, Dublin Core is a way of attaching a rights
+   value to a described work rather than a policy language in its own
+   right, and it sits on the ladder in much the same place.  Where the
+   value of dcterms:license is a URI resolving to a licence of fixed
+   meaning, the annotation is interpretable; where it is a free-text
+   statement of rights, as dcterms:rights commonly is, it reaches no
+   further than parseable, and a consuming Agent is left stuck with a
+   string it can't resolve.  Dublin Core's own guidance is very open
+   about this, noting that a bare URI recorded as a value string gives a
+   consuming application no reliable way to tell it apart from any other
+   string and so to treat it as an identifier.  It provides, like the
+   other embedded-metadata schemes, provenance (in the weak sense of
+   recorded attribution) but no means to verify that a rights statement
+   is authentic or unaltered.
+
+6.9.  C2PA
 
    The Coalition for Content Provenance and Authenticity (C2PA) [C2PA]
    is unlike everything else surveyed here, because it is not a usage-
@@ -493,6 +525,11 @@ Table of Contents
               "ccREL: The Creative Commons Rights Expression Language",
               W3C Member Submission, 20 August 2008,
               <https://www.w3.org/submissions/2008/02/>.
+
+   [DCTERMS]  Dublin Core Metadata Initiative, "DCMI Metadata Terms",
+              DCMI Recommendation, 20 January 2020,
+              <https://www.dublincore.org/specifications/dublin-core/
+              dcmi-terms/>.
 
    [DPV]      Pandit, H. J., Esteves, B., and G. P. Krog, "Data Privacy
               Vocabulary (DPV)", W3C Community Group Final Report, 1
