@@ -4,7 +4,8 @@ abbrev: "Machine Readability"
 category: info
 
 docname: draft-vaughan-machine-readability-latest
-submissiontype: independent
+submissiontype: IETF
+ipr: trust200902
 number:
 date:
 v: 3
@@ -21,10 +22,8 @@ author:
     organization: Common Crawl Foundation
     email: "thom@commoncrawl.org"
 
-normative:
-  RFC9309:
-
 informative:
+  RFC9309:
   I-D.ietf-aipref-vocab:
   I-D.ietf-aipref-attach:
 
@@ -109,14 +108,14 @@ usage preferences and legal terms of service.
 # Introduction {#introduction}
 
 Expressions of how content may be used by automated systems are increasingly published in forms described as "machine readable".  Operators of crawlers and other automated Agents are expected to discover these Expressions, determine what they permit or forbid, and act accordingly.  The term "machine readable" is invoked frequently in this context, in standards work, in policy, and in legislation, but it is rarely defined with enough precision to tell an implementer whether a given Expression actually supports automated action.
+
 The difficulty is that "machine readable" names several distinct properties that are commonly conflated. An Expression may be serialised in a structured syntax, and so be straightforward for a program to parse, while still conveying nothing a program can act upon.  A terms-of-service document placed verbatim in a JSON string sits inside a parseable envelope, but the terms themselves parse no better than the same text in a web page.  What a conforming Agent recovers is a string of legalese, not a structured representation of anything upon which it can act.  Conversely, an Expression may be richly actionable yet undiscoverable, or trivially discoverable yet unverifiable.  Treating "machine readable" as a single binary property obscures these differences, and permits a Declaring Party to claim machine readability on the strength of the least demanding property while failing the ones that actually matter for automated action.
+
 This document separates "machine readable" into five properties: an Expression may be discoverable, parseable, interpretable, actionable, and verifiable.  These are defined in {{terminology}} and {{ladder}}.  They are presented as a ladder, from least to most demanding, but they do not strictly entail one another, and {{separability}} sets out how they come apart in practice.  The purpose of the framework is diagnostic: it allows a given mechanism to be described in terms of precisely which properties it provides, rather than asserted to be machine readable as an undifferentiated whole.
+
 The framework is general, but this document applies it in particular to two cases: the expression of usage preferences for automated processing, and the expression of legal terms of service.  The latter is treated at length in {{requirements-for-legal-terms}}, because legal text exposes the gap between the lower and higher rungs most sharply.  Terms that are easy to publish in a structured form are frequently impossible to act upon without human interpretation.
+
 This document does not define a vocabulary, a syntax, or a protocol, and it is not a product of any IETF working group.  It does not propose that any existing mechanism be changed.  Its contribution is a set of definitions against which existing and future mechanisms can be assessed.
-
-## Requirements Language
-
-{::boilerplate bcp14-tagged}
 
 # Terminology
 
@@ -161,14 +160,19 @@ An Expression is verifiable if an Agent can establish that it genuinely originat
 # Separability {#separability}
 
 The ladder metaphor is an expository convenience, and not a claim that each characteristic actually strictly entails the ones below it.  Real Expressions satisfy these properties in patches.
+
 The Robots Exclusion Protocol {{RFC9309}} is both highly discoverable and parseable.  It is fetched from a fixed location before any other resource, and its grammar is defined in ABNF.  It is deliberately not interpretable in the rich sense used here, because its vocabulary is confined to access control (allow and disallow against paths) and carries no shared semantics for what an Agent may do with content once fetched.  It provides no verifiability whatsoever and trust derives entirely from the authority of the server.
+
 Conversely, a cryptographic provenance Expression may be verifiable and parseable while saying nothing about usage permissions at all, and so contribute nothing on the actionable rung for a usage decision.
+
 An Expression may, therefore, occupy a high rung while failing a lower one, or satisfy a lower rung richly while being absent higher up.  The value of the ladder is diagnostic in that it lets one state precisely which property a given mechanism provides and, more importantly, which it does not, rather than asserting that a mechanism is or is not "machine readable" as an undifferentiated whole.
 
 # Requirements for Legal Terms {#requirements-for-legal-terms}
 
 The properties of {{ladder}} are general, but legal terms of service are where the gap between the lower and higher rungs is widest.  Terms are easy to publish in a parseable form, and may even reach {{interpretable}}, but in most cases they stop short of {{actionable}}: they cannot be acted upon without a human to interpret them.  A document may be structurally sound, valid against a schema, and served from a location an Agent can discover, and still offer that Agent no machine-determinable answer to the one question it actually has, which is whether the action it is about to take is permitted.
+
 At crawl scale this ceases to be a nuisance and becomes a barrier.  An Agent operating across the web encounters resources in numbers that make per-resource interpretation of natural-language terms infeasible as part of fetching them.  No stage of a crawl pipeline can read a terms-of-service document, written for human readers and varying from one site to the next, quickly enough, reliably enough, and cheaply enough to decide the fetch.  A mechanism that demands this does not describe a workable system.  It describes a human reading legalese, repeated some billions of times.
+
 It is sometimes proposed that a large language model (LLM) could close the gap, reading the terms at scale and reporting what they permit.  Such an approach must not be relied upon for usage decisions.  A language model does not determine what a document permits.  It produces text resembling that determination, and it does so with a well-documented tendency to hallucinate or fabricate.  A crawler that fetches or declines a Resource on the strength of a model's reading of prose is making an access decision from output that may be confidently wrong, and cannot be checked against the source without the very human reading it was meant to replace.  Wrapping the prose in a structured form changes none of this.  The wrapper is parseable, but it does not render the terms inside it actionable.
 
 # Relationship to Existing Work {#existing}
@@ -213,16 +217,23 @@ The Coalition for Content Provenance and Authenticity (C2PA) {{C2PA}} is unlike 
 
 # Security Considerations
 
-TODO Spoofing, provenance, downgrade, etc.  BCP14 stuff maybe.
+This document defines terminology and a diagnostic framework.  It specifies no protocol, syntax, or wire format, and so introduces no new protocol elements to secure.  The security considerations that arise concern how the properties it defines are relied upon by Agents making usage decisions.
+
+An Expression that is not verifiable ({{verifiable}}) can be forged, altered in transit or at rest, or published by a party with no authority over the Resource.  An Agent that acts on unverifiable Expressions is trusting, at most, the channel over which it obtained them: for a robots.txt file, the server's authority over its own domain; for embedded metadata, whoever last wrote the file.  Every mechanism surveyed in {{existing}} except C2PA has this property, and Agents should treat the assertions such Expressions carry accordingly.
+
+The absence of integrity protection also permits downgrade by removal.  Where an Expression is conveyed separately from the Resource it governs, an intermediary that strips or weakens the Expression leaves the Agent with no indication that a preference was ever asserted.  An Agent cannot tell the difference between "no Expression published" and "Expression removed in transit" unless the mechanism binds the Expression to the Resource in some tamper-evident way.
+
+Conflation of the lower rungs with the higher ones is itself a hazard.  An Agent that treats a parseable Expression as actionable is acting on content it has not, in the sense of {{ladder}}, actually understood, and a Declaring Party or third party can exploit that gap by presenting structurally valid Expressions whose free-text content does not mean what the Agent's heuristics assume it means.
+
+Finally, the use of language models to interpret natural-language terms, discussed in {{requirements-for-legal-terms}}, adds an attack surface beyond the reliability problem described there.  Text under the control of a Declaring Party or of a third party is processed by a model whose output steers the Agent's behaviour; adversarially crafted terms may induce a permissive reading that the document does not support, or otherwise manipulate the consuming system.  This is a further reason such output must not be the basis of usage decisions.
 
 # IANA Considerations
 
 This document has no IANA actions.
 
-
---- back
-
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+The author thanks Pedro Ortiz Suarez, Erin Simon, and Christopher Flammang for their reviews of this document and their suggested additions.
+
+--- back
