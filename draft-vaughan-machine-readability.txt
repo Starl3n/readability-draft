@@ -4,8 +4,8 @@
 
 Network Working Group                                         T. Vaughan
 Internet-Draft                                   Common Crawl Foundation
-Intended status: Informational                               2 July 2026
-Expires: 3 January 2027
+Intended status: Informational                               3 July 2026
+Expires: 4 January 2027
 
 
 Defining Machine Readability for Usage Preferences and Policy Expression
@@ -48,7 +48,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 January 2027.
+   This Internet-Draft will expire on 4 January 2027.
 
 Copyright Notice
 
@@ -59,12 +59,14 @@ Copyright Notice
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
-   and restrictions with respect to this document.
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
 
 Table of Contents
 
    1.  Introduction
-     1.1.  Requirements Language
    2.  Terminology
    3.  A Ladder of Machine Readability
      3.1.  Discoverable
@@ -86,10 +88,8 @@ Table of Contents
      6.9.  C2PA
    7.  Security Considerations
    8.  IANA Considerations
-   9.  References
-     9.1.  Normative References
-     9.2.  Informative References
    Acknowledgments
+   Informative References
    Author's Address
 
 1.  Introduction
@@ -101,8 +101,9 @@ Table of Contents
    act accordingly.  The term "machine readable" is invoked frequently
    in this context, in standards work, in policy, and in legislation,
    but it is rarely defined with enough precision to tell an implementer
-   whether a given Expression actually supports automated action.  The
-   difficulty is that "machine readable" names several distinct
+   whether a given Expression actually supports automated action.
+
+   The difficulty is that "machine readable" names several distinct
    properties that are commonly conflated.  An Expression may be
    serialised in a structured syntax, and so be straightforward for a
    program to parse, while still conveying nothing a program can act
@@ -116,34 +117,31 @@ Table of Contents
    property obscures these differences, and permits a Declaring Party to
    claim machine readability on the strength of the least demanding
    property while failing the ones that actually matter for automated
-   action.  This document separates "machine readable" into five
-   properties: an Expression may be discoverable, parseable,
-   interpretable, actionable, and verifiable.  These are defined in
-   Section 2 and Section 3.  They are presented as a ladder, from least
-   to most demanding, but they do not strictly entail one another, and
-   Section 4 sets out how they come apart in practice.  The purpose of
-   the framework is diagnostic: it allows a given mechanism to be
-   described in terms of precisely which properties it provides, rather
-   than asserted to be machine readable as an undifferentiated whole.
+   action.
+
+   This document separates "machine readable" into five properties: an
+   Expression may be discoverable, parseable, interpretable, actionable,
+   and verifiable.  These are defined in Section 2 and Section 3.  They
+   are presented as a ladder, from least to most demanding, but they do
+   not strictly entail one another, and Section 4 sets out how they come
+   apart in practice.  The purpose of the framework is diagnostic: it
+   allows a given mechanism to be described in terms of precisely which
+   properties it provides, rather than asserted to be machine readable
+   as an undifferentiated whole.
+
    The framework is general, but this document applies it in particular
    to two cases: the expression of usage preferences for automated
    processing, and the expression of legal terms of service.  The latter
    is treated at length in Section 5, because legal text exposes the gap
    between the lower and higher rungs most sharply.  Terms that are easy
    to publish in a structured form are frequently impossible to act upon
-   without human interpretation.  This document does not define a
-   vocabulary, a syntax, or a protocol, and it is not a product of any
-   IETF working group.  It does not propose that any existing mechanism
-   be changed.  Its contribution is a set of definitions against which
-   existing and future mechanisms can be assessed.
+   without human interpretation.
 
-1.1.  Requirements Language
-
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
+   This document does not define a vocabulary, a syntax, or a protocol,
+   and it is not a product of any IETF working group.  It does not
+   propose that any existing mechanism be changed.  Its contribution is
+   a set of definitions against which existing and future mechanisms can
+   be assessed.
 
 2.  Terminology
 
@@ -233,21 +231,25 @@ Table of Contents
 
    The ladder metaphor is an expository convenience, and not a claim
    that each characteristic actually strictly entails the ones below it.
-   Real Expressions satisfy these properties in patches.  The Robots
-   Exclusion Protocol [RFC9309] is both highly discoverable and
-   parseable.  It is fetched from a fixed location before any other
+   Real Expressions satisfy these properties in patches.
+
+   The Robots Exclusion Protocol [RFC9309] is both highly discoverable
+   and parseable.  It is fetched from a fixed location before any other
    resource, and its grammar is defined in ABNF.  It is deliberately not
    interpretable in the rich sense used here, because its vocabulary is
    confined to access control (allow and disallow against paths) and
    carries no shared semantics for what an Agent may do with content
    once fetched.  It provides no verifiability whatsoever and trust
-   derives entirely from the authority of the server.  Conversely, a
-   cryptographic provenance Expression may be verifiable and parseable
-   while saying nothing about usage permissions at all, and so
-   contribute nothing on the actionable rung for a usage decision.  An
-   Expression may, therefore, occupy a high rung while failing a lower
-   one, or satisfy a lower rung richly while being absent higher up.
-   The value of the ladder is diagnostic in that it lets one state
+   derives entirely from the authority of the server.
+
+   Conversely, a cryptographic provenance Expression may be verifiable
+   and parseable while saying nothing about usage permissions at all,
+   and so contribute nothing on the actionable rung for a usage
+   decision.
+
+   An Expression may, therefore, occupy a high rung while failing a
+   lower one, or satisfy a lower rung richly while being absent higher
+   up.  The value of the ladder is diagnostic in that it lets one state
    precisely which property a given mechanism provides and, more
    importantly, which it does not, rather than asserting that a
    mechanism is or is not "machine readable" as an undifferentiated
@@ -263,28 +265,31 @@ Table of Contents
    may be structurally sound, valid against a schema, and served from a
    location an Agent can discover, and still offer that Agent no
    machine-determinable answer to the one question it actually has,
-   which is whether the action it is about to take is permitted.  At
-   crawl scale this ceases to be a nuisance and becomes a barrier.  An
-   Agent operating across the web encounters resources in numbers that
-   make per-resource interpretation of natural-language terms infeasible
-   as part of fetching them.  No stage of a crawl pipeline can read a
-   terms-of-service document, written for human readers and varying from
-   one site to the next, quickly enough, reliably enough, and cheaply
-   enough to decide the fetch.  A mechanism that demands this does not
-   describe a workable system.  It describes a human reading legalese,
-   repeated some billions of times.  It is sometimes proposed that a
-   large language model (LLM) could close the gap, reading the terms at
-   scale and reporting what they permit.  Such an approach must not be
-   relied upon for usage decisions.  A language model does not determine
-   what a document permits.  It produces text resembling that
-   determination, and it does so with a well-documented tendency to
-   hallucinate or fabricate.  A crawler that fetches or declines a
-   Resource on the strength of a model's reading of prose is making an
-   access decision from output that may be confidently wrong, and cannot
-   be checked against the source without the very human reading it was
-   meant to replace.  Wrapping the prose in a structured form changes
-   none of this.  The wrapper is parseable, but it does not render the
-   terms inside it actionable.
+   which is whether the action it is about to take is permitted.
+
+   At crawl scale this ceases to be a nuisance and becomes a barrier.
+   An Agent operating across the web encounters resources in numbers
+   that make per-resource interpretation of natural-language terms
+   infeasible as part of fetching them.  No stage of a crawl pipeline
+   can read a terms-of-service document, written for human readers and
+   varying from one site to the next, quickly enough, reliably enough,
+   and cheaply enough to decide the fetch.  A mechanism that demands
+   this does not describe a workable system.  It describes a human
+   reading legalese, repeated some billions of times.
+
+   It is sometimes proposed that a large language model (LLM) could
+   close the gap, reading the terms at scale and reporting what they
+   permit.  Such an approach must not be relied upon for usage
+   decisions.  A language model does not determine what a document
+   permits.  It produces text resembling that determination, and it does
+   so with a well-documented tendency to hallucinate or fabricate.  A
+   crawler that fetches or declines a Resource on the strength of a
+   model's reading of prose is making an access decision from output
+   that may be confidently wrong, and cannot be checked against the
+   source without the very human reading it was meant to replace.
+   Wrapping the prose in a structured form changes none of this.  The
+   wrapper is parseable, but it does not render the terms inside it
+   actionable.
 
 6.  Relationship to Existing Work
 
@@ -490,31 +495,58 @@ Table of Contents
 
 7.  Security Considerations
 
-   TODO Spoofing, provenance, downgrade, etc.  BCP14 stuff maybe.
+   This document defines terminology and a diagnostic framework.  It
+   specifies no protocol, syntax, or wire format, and so introduces no
+   new protocol elements to secure.  The security considerations that
+   arise concern how the properties it defines are relied upon by Agents
+   making usage decisions.
+
+   An Expression that is not verifiable (Section 3.5) can be forged,
+   altered in transit or at rest, or published by a party with no
+   authority over the Resource.  An Agent that acts on unverifiable
+   Expressions is trusting, at most, the channel over which it obtained
+   them: for a robots.txt file, the server's authority over its own
+   domain; for embedded metadata, whoever last wrote the file.  Every
+   mechanism surveyed in Section 6 except C2PA has this property, and
+   Agents should treat the assertions such Expressions carry
+   accordingly.
+
+   The absence of integrity protection also permits downgrade by
+   removal.  Where an Expression is conveyed separately from the
+   Resource it governs, an intermediary that strips or weakens the
+   Expression leaves the Agent with no indication that a preference was
+   ever asserted.  An Agent cannot tell the difference between "no
+   Expression published" and "Expression removed in transit" unless the
+   mechanism binds the Expression to the Resource in some tamper-evident
+   way.
+
+   Conflation of the lower rungs with the higher ones is itself a
+   hazard.  An Agent that treats a parseable Expression as actionable is
+   acting on content it has not, in the sense of Section 3, actually
+   understood, and a Declaring Party or third party can exploit that gap
+   by presenting structurally valid Expressions whose free-text content
+   does not mean what the Agent's heuristics assume it means.
+
+   Finally, the use of language models to interpret natural-language
+   terms, discussed in Section 5, adds an attack surface beyond the
+   reliability problem described there.  Text under the control of a
+   Declaring Party or of a third party is processed by a model whose
+   output steers the Agent's behaviour; adversarially crafted terms may
+   induce a permissive reading that the document does not support, or
+   otherwise manipulate the consuming system.  This is a further reason
+   such output must not be the basis of usage decisions.
 
 8.  IANA Considerations
 
    This document has no IANA actions.
 
-9.  References
+Acknowledgments
 
-9.1.  Normative References
+   The author thanks Pedro Ortiz Suarez, Erin Simon, and Christopher
+   Flammang for their reviews of this document and their suggested
+   additions.
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/rfc/rfc2119>.
-
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
-
-   [RFC9309]  Koster, M., Illyes, G., Zeller, H., and L. Sassman,
-              "Robots Exclusion Protocol", RFC 9309,
-              DOI 10.17487/RFC9309, September 2022,
-              <https://www.rfc-editor.org/rfc/rfc9309>.
-
-9.2.  Informative References
+Informative References
 
    [C2PA]     Coalition for Content Provenance and Authenticity,
               "Coalition for Content Provenance and Authenticity (C2PA)
@@ -554,6 +586,11 @@ Table of Contents
               W3C Recommendation, 15 February 2018,
               <https://www.w3.org/TR/odrl-model/>.
 
+   [RFC9309]  Koster, M., Illyes, G., Zeller, H., and L. Sassman,
+              "Robots Exclusion Protocol", RFC 9309,
+              DOI 10.17487/RFC9309, September 2022,
+              <https://www.rfc-editor.org/rfc/rfc9309>.
+
    [SCHEMA-ORG]
               Schema.org, "schema.org: license property", n.d.,
               <https://schema.org/license>.
@@ -562,10 +599,6 @@ Table of Contents
               W3C Community Group Final Report, 10 May 2024,
               <https://www.w3.org/community/reports/tdmrep/CG-FINAL-
               tdmrep-20240510/>.
-
-Acknowledgments
-
-   TODO acknowledge.
 
 Author's Address
 
