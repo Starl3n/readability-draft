@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-02T01:11:17.536016+00:00",
+  "timestamp": "2026-07-05T04:07:37.248316+00:00",
   "repo": "thunderpoot/readability-draft",
   "labels": [
     {
@@ -49,6 +49,41 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOTI7wBc8AAAABHlsTSA",
+      "title": "TDMRep description overstates web-content scope (suggested edit from Laurent Le Meur)",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/1",
+      "state": "OPEN",
+      "author": "thunderpoot",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thunderpoot"
+      ],
+      "labels": [],
+      "body": "https://github.com/thunderpoot/readability-draft/blob/4cddc0331f0885161175b2a1d9d98296b3965b7f/draft-vaughan-machine-readability.md?plain=1#L202-L204\n\nLaurent Le Meur (TDMRep editor) notes that the -00's description of TDMRep frames it as a mechanism for web content only, when the protocol also covers other kinds of assets (e.g. via file-format metadata).\n\nHis suggested replacement text:\n```\nThe TDM Reservation Protocol (TDMRep) [TDMREP], a W3C Community Group Final Report, is a deliberately simple mechanism by which a rights holder can reserve text-and-data-mining rights over web content or other kinds of assets, developed as a technical response to the reservation contemplated by Article 4 of the EU's Digital Single Market copyright directive.\n```\n\n**Action:** adopt the suggested wording (or equivalent) in the TDMRep description.\n\n**Target:** -01, to be pushed following discussions at IETF 126 Vienna.",
+      "createdAt": "2026-07-03T14:29:39Z",
+      "updatedAt": "2026-07-04T00:02:40Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOTI7wBc8AAAABHoTrSA",
+      "title": "Definition of 'Expression'",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/2",
+      "state": "OPEN",
+      "author": "appydog",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "This is an excellent proposal and, I think, one that will be really, really useful.\n\nOne thought - I think the definition of `Expression` is too tight.\n\nThe introduction states:\n\n> The framework is general, but this document applies it in particular\n> to two cases: the expression of usage preferences for automated\n> processing, and the expression of legal terms of service.\n\nI understand where you're coming from with this, as these are areas that are quite current.  But looking to the long-term I think that inclusion of content in the RFC that is specifically related to these areas should be illustrative rather than built into the framework itself (either explicitly or implicitly), otherwise that could be a reason to think that the RFC doesn't apply to a particular use-case.  I think, from your wording, that is your intent, but I'm stating it here to make it explicit.\n\nFurthermore, I would argue that the terminology is part of the framework and therefore should be general.\n\nThe current definition of expression is as follows:\n\n>   Expression:  A concrete artefact (for instance: a file, header,\n>      embedded block, or metadata record) that conveys preferences,\n>      rights, terms, or other policies about a resource.\n\nHowever, this RFC should be able to apply to anything, not just preferences, rights, terms or policies.  For example, a message store can be machine readable.  Or a library catalogue.  Or a recipe.\n\nThe current definition is focusing on meta-data, but the actual resource itself can be categorised in the same way, vis-a-vis machine readability and therefore I think the definition of `Expression` should reflect that.\n\nAs a starting point, here is an alternative proposal for this term:\n\n>   Expression:  A concrete artefact (for instance: a file, header,\n>      embedded block, or metadata record) that conveys\n>      structured information.\n\nI include the word `structured` because I think that if the information is unstructured then there's no real point in discussing machine-readability, though I'm aware that even unstructured information can meet the first principle of being discoverable.\n\nI deliberately do not include `about a resource` as the information can also be the actual resource, itself.\n\nI think it could be reasonable to include a list of items, but only as exemplars not (as it appears in the current example) as if it is an exhaustive list.  I don't think it's necessary, but if you wanted to include it you could do something like:\n\n>   Expression:  A concrete artefact (for instance: a file, header,\n>      embedded block, or metadata record) that conveys\n>      structured information, for example preferences, rights\n>      terms or other policies.\n\nHowever, even with a 'for example' I feel that it implicitly limits the scope.\n\nThoughts?",
+      "createdAt": "2026-07-04T00:14:06Z",
+      "updatedAt": "2026-07-04T00:20:20Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": []
 }
