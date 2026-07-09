@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-07T04:04:16.117930+00:00",
+  "timestamp": "2026-07-09T03:58:19.465255+00:00",
   "repo": "thunderpoot/readability-draft",
   "labels": [
     {
@@ -83,6 +83,84 @@
       "updatedAt": "2026-07-04T00:20:20Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOTI7wBc8AAAABH7kvEA",
+      "title": "Add non-abuse clause: the framework defines no conformance threshold",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/3",
+      "state": "OPEN",
+      "author": "thunderpoot",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thunderpoot"
+      ],
+      "labels": [],
+      "body": "Laurent Le Meur raised the following on the -00:\n\n> It may still become a problem if people abuse it, claiming that no expression is machine-readable unless it clearly presents the 5 properties you define. You are speaking about steps on a ladder; is an expression machine-readable if it only climbs the first two steps? one step?\n\nSection 7 talks about the Declaring Party claiming machine readability on the strength of the weakest property but doesn't say anything about the inverse of that, in which an Agent treats the absence of higher-rung properties as licence to disregard an Expression altogether.\n\n**Proposed changes:**\n\nAdd a clause at the end of Section 4, with a pointer from Security Considerations, stating that:\n\n1. the framework defines no conformance threshold and must not be read as one;\n2. an Agent must not treat the absence of a higher-rung property as grounds to disregard an Expression that is discoverable, interpretable and actionable for the decision at hand.\n\nAlso add a note about scope saying whether a given Expression satisfies a legal requirement of machine readability (for instance under Article 4 of the EU DSM Directive)\n\n**Target:** -01 (following discussion at IETF 126 Vienna)",
+      "createdAt": "2026-07-07T09:37:02Z",
+      "updatedAt": "2026-07-07T09:37:02Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOTI7wBc8AAAABH7ogEw",
+      "title": "Restructure the ladder: verifiability is orthogonal",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/4",
+      "state": "OPEN",
+      "author": "thunderpoot",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thunderpoot"
+      ],
+      "labels": [],
+      "body": "The ladder metaphor implies that each property must be attained before the next, and leads to people thinking in terms of thresholds (see issue on the non-abuse clause #3).\n\nThere is a dependency chain among the first four properties: an Agent cannot parse what it cannot discover, cannot interpret what it cannot parse, and cannot act on what it cannot interpret. Verifiability does not sit on top of that chain, however. It governs how much trust an Agent places in an Expression, not whether the Expression can be found, parsed, understood or acted upon. \n\n**Proposed changes:**\n\nChange the model to an ordered pipeline (discoverable -> parseable -> interpretable -> actionable) with verifiability as an orthogonal trust axis that applies at each of these stages.\n\nMake the distinction explicit between actionability as capability (the Expression's semantics are determinate enough that an Agent should know exactly what behaviour is called for) and \"verifiability as warrant\" (whether the Agent is justified in trusting the assertion). Neither presupposes the other.\n\nIf the ordering remains anywhere, it should say that it isn't a scale on which Expressions accumulate points towards a \"passing grade\".\n\n**Target:** -01, following discussion at IETF 126 Vienna.",
+      "createdAt": "2026-07-07T09:44:45Z",
+      "updatedAt": "2026-07-07T09:44:45Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOTI7wBc8AAAABH7p2fA",
+      "title": "Acknowledge provenance of well-known locations",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/5",
+      "state": "OPEN",
+      "author": "thunderpoot",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "thunderpoot"
+      ],
+      "labels": [],
+      "body": "Mechanisms served from a well-known location (robots.txt, `/.well-known/tdmrep.json`) have an implicit (and somewhat weak) form of provenance, since publishing at that path is itself evidence that the party controlling the origin domain placed the Expression there.\n\n**Proposed change:**\n\nAdd text acknowledging origin-domain control as a weak provenance signal and note that it's still an assurance about who is speaking rather than about the clarity or validity of the instruction.\n\n**Target:** -01.",
+      "createdAt": "2026-07-07T09:47:20Z",
+      "updatedAt": "2026-07-07T09:47:20Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 6,
+      "id": "I_kwDOTI7wBc8AAAABH8GA3w",
+      "title": "Sections 3.4 and 4 rewording",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/6",
+      "state": "OPEN",
+      "author": "thunderpoot",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "> An Expression that says \"use must be fair\" is interpretable but admits no definite outcome, because 'fair' is not a checkable condition\n\nchange to:\n\n> An Expression that says \"use must be fair\" might be interpretable but admits no definite outcome, because 'fair' is not a checkable condition\n\n<hr>\n\nSection 4's text:\n\n> The Robots Exclusion Protocol [[RFC9309](https://www.ietf.org/archive/id/draft-vaughan-machine-readability-00.html#RFC9309)] is both highly discoverable and parseable. It is fetched from a fixed location before any other resource, and its grammar is defined in ABNF. It is deliberately not interpretable in the rich sense used here, because its vocabulary is confined to access control (allow and disallow against paths) and carries no shared semantics for what an Agent may do with content once fetched.\n\n... is clumsy, and refers to a \"rich sense of interpretability\" which isn't properly defined.  The point is that REP signals are strongly interpretable and this bit needs rewriting.  TBC.\n\n**Target:** -01",
+      "createdAt": "2026-07-07T10:48:37Z",
+      "updatedAt": "2026-07-07T10:59:37Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "handecelikkanat",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think I now got what you mean by \"Interpretable\". I didnt get this from the text, but it might be also because I had a preconception of the word \"Interpretable\" from before.\n\nI think you also means with it, not only possible to Interpret (by comparing to a vocabulary), but also Must be Interpreted (because it is rich).\n\nIn that, robots.txt maps to a singular meaning (can be interpreted in a singular meaning), but it is not rich (it does not need mapping to a vocab).\n\nSo ymmv. My understanding problem may be with Section 3.3. I think the rest (3.4, 4) is in alignment with your intended meaning.",
+          "createdAt": "2026-07-07T10:59:37Z",
+          "updatedAt": "2026-07-07T10:59:37Z"
+        }
+      ]
     }
   ],
   "pulls": []
