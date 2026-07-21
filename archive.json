@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-19T03:33:14.700141+00:00",
+  "timestamp": "2026-07-21T03:27:00.673308+00:00",
   "repo": "thunderpoot/readability-draft",
   "labels": [
     {
@@ -161,6 +161,22 @@
           "updatedAt": "2026-07-07T10:59:37Z"
         }
       ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOTI7wBc8AAAABJci3UA",
+      "title": "C2PA section should also reference CAWG's Training & Data Mining Assertion",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/7",
+      "state": "OPEN",
+      "author": "lrosenthol",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "the section on C2PA's Content Credentials is well written, but does not specifically call out the [CAWG Training & Data Mining Assertion](https://cawg.io/training-and-data-mining/1.1/), which is where the rights/permissions mentioned on the other items can be found.\n",
+      "createdAt": "2026-07-20T12:22:04Z",
+      "updatedAt": "2026-07-20T12:22:04Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": []
