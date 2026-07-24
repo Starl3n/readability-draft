@@ -196,7 +196,7 @@ An Expression is discoverable if an Agent can locate it from the Resource, or fr
 
 An Expression is actionable, for a given Agent and a given pending action, if the interpreted Expression determines a definite outcome for that action (like "permitted", "forbidden", or something like "conditional-based-on-a-checkable-condition") without recourse to a human.  A test for this could be whether the Agent can map the interpreted Expression onto its specific pending action and get an answer.
 
-Unlike the core criteria, actionability is not intrinsic to the Expression: it is a relation between the Expression and a consumer's circumstances, and the same Expression may be actionable for one Agent and not for another.  "Training forbidden" is actionable against the action "train" and silent against the action "index".  The scope of application is part of the same relation: an Expression may determine an outcome for a Resource as a whole while determining none for an excerpt or a derivative of it.  An Expression that says "use must be fair" is interpretable but actionable for no Agent, because 'fair' is not a checkable condition.
+Unlike the core criteria, actionability is not intrinsic to the Expression: it is a relation between the Expression and a consumer's circumstances, and the same Expression may be actionable for one Agent and not for another.  "Training forbidden" is actionable against the action "train" and silent against the action "index".  The scope of application is part of the same relation: an Expression may determine an outcome for a Resource as a whole while determining none for an excerpt or a derivative of it.  An Expression that says "use must be fair" might be interpretable, but it is actionable for no Agent, because 'fair' is not a checkable condition.
 
 "Copyright in the US has run out" is an example of something that is interpretable but not necessarily actionable, depending on what you are trying to do.  This ties to verifiability, since one would need to verify such a statement in order to take any action at all.
 
@@ -218,7 +218,7 @@ Whether an Expression satisfies a legal requirement of machine readability, such
 
 Real Expressions satisfy the properties of {{criteria}} in patches, and the patchwork is the point of assessing them separately.
 
-The Robots Exclusion Protocol {{RFC9309}} is both highly discoverable and parseable.  It is fetched from a fixed location before any other resource, and its grammar is defined in ABNF.  It is deliberately not interpretable in the rich sense used here, because its vocabulary is confined to access control (allow and disallow against paths) and carries no shared semantics for what an Agent may do with content once fetched.  It provides no verifiability whatsoever and trust derives entirely from the authority of the server.
+The Robots Exclusion Protocol {{RFC9309}} is highly discoverable and parseable: it is fetched from a fixed location before any other resource, and its grammar is defined in ABNF.  Within its own vocabulary it is strongly interpretable as well, since allow and disallow against paths are terms whose meaning the specification itself pins, and two conforming crawlers assign them the same meaning.  What it lacks is breadth rather than rigour.  The vocabulary is confined to access control and carries no shared semantics for what an Agent may do with content once fetched, so for a usage decision there is nothing in it to interpret.  It provides no formal verifiability, and trust derives from the authority of the server over its own domain, which is the weak provenance of {{verifiable}} and nothing more.
 
 Conversely, a cryptographic provenance Expression may be verifiable and parseable while saying nothing about usage permissions at all, and so contribute nothing towards actionability for a usage decision.
 
@@ -238,7 +238,7 @@ The mechanisms surveyed below each address some part of the problem this documen
 
 ## Robots Exclusion Protocol
 
-The Robots Exclusion Protocol {{RFC9309}}, standardised in 2022 from the convention Martijn Koster introduced in 1994, lets a service state which URI paths a named crawler may fetch.  Its grammar is defined in ABNF and a crawler retrieves it from a fixed location before fetching anything else, so it is highly discoverable and parseable.  It is, by its own terms, access control and not authorisation, and it says nothing about what may be done with content once fetched.  It carries no provenance or integrity mechanism, and a crawler's trust in it rests entirely on the server's authority over the domain.  It is the clearest example in this document of a mechanism whose Expressions provide discoverability and parseability completely, and the other properties not at all, by design.
+The Robots Exclusion Protocol {{RFC9309}}, standardised in 2022 from the convention Martijn Koster introduced in 1994, lets a service state which URI paths a named crawler may fetch.  Its grammar is defined in ABNF and a crawler retrieves it from a fixed location before fetching anything else, so it is highly discoverable and parseable.  It is, by its own terms, access control and not authorisation, and it says nothing about what may be done with content once fetched.  It carries no provenance or integrity mechanism, and a crawler's trust in it rests entirely on the server's authority over the domain.  It is the clearest example in this document of narrowness by design: complete on discoverability and parseability, strongly interpretable within a vocabulary that extends no further than access control, and silent on everything beyond it.
 
 ## AIPREF
 
@@ -317,4 +317,5 @@ The author thanks Pedro Ortiz Suarez, Erin Simon, Christopher Flammang, Alissa C
 - Noted that crawl-scale consumption requires low-context communication.  (IETF 126 discussion.)
 - Noted that the core criteria correspond to the structural/semantic interoperability distinction and to the data-model/information-model distinction of {{RFC3444}}.
 - Acknowledged the weak provenance implicit in publication at a well-known location ({{verifiable}}), and tied the Robots Exclusion Protocol's trust model to it.  (Issue #5.)
+- Reworded the "use must be fair" example ("might be interpretable"), and rewrote the Robots Exclusion Protocol paragraph in {{independence}}: its Expressions are strongly interpretable within a deliberately narrow vocabulary.  (Issue #6.)
 - Added the CAWG Training and Data Mining assertion to the C2PA section.  (Issue #7.)
