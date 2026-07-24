@@ -91,6 +91,12 @@ informative:
     author:
       - org: Coalition for Content Provenance and Authenticity
 
+  CAWG-TDM:
+    target: https://cawg.io/training-and-data-mining/
+    title: "Training and Data Mining Assertion"
+    author:
+      - org: Creator Assertions Working Group
+
   FAIR:
     target: https://doi.org/10.1038/sdata.2016.18
     title: "The FAIR Guiding Principles for scientific data management and stewardship"
@@ -262,7 +268,7 @@ The Dublin Core metadata terms {{DCTERMS}}, maintained by the Dublin Core Metada
 
 ## C2PA
 
-The Coalition for Content Provenance and Authenticity (C2PA) {{C2PA}} is unlike everything else surveyed here, because it is not a usage-preference or rights mechanism at all but a provenance one, and it is the only mechanism in the survey that answers the verifiable dimension.  C2PA binds a cryptographically signed manifest to a digital asset, recording assertions about the asset's origin and editing history; the signature and a hash binding make the manifest tamper-evident, so that any later alteration of the content or the manifest can be detected.  This is genuine verifiability of a kind none of the others provide.  It is worth being precise, though, about which part of verifiability it delivers.  Verifiability ({{verifiable}}) as defined here requires that an Expression has not been altered, and that it genuinely originates from a party authorised to make the assertion.  C2PA answers the first part cleanly.  The second is only answered halfway, in that it establishes that a particular signer made the assertion and that the assertion is unchanged since, but not that the assertion is true, nor that the signer had any standing to make it.  As C2PA's own materials put it, it proves who signed a claim, not whether the claim is true.  The integrity limb is solved; the authority limb, who is entitled to speak for the Resource, is left where the other mechanisms leave it.
+The Coalition for Content Provenance and Authenticity (C2PA) {{C2PA}} is unlike everything else surveyed here, because it is not a usage-preference or rights mechanism at all but a provenance one, and it is the only mechanism in the survey that answers the verifiable dimension.  C2PA binds a cryptographically signed manifest to a digital asset, recording assertions about the asset's origin and editing history; the signature and a hash binding make the manifest tamper-evident, so that any later alteration of the content or the manifest can be detected.  This is genuine verifiability of a kind none of the others provide.  Nor is a manifest confined to provenance history: the Creator Assertions Working Group defines a Training and Data Mining assertion {{CAWG-TDM}} through which a manifest can carry usage preferences, stating whether an asset may be used for data mining or for AI training, including generative training, inside the signed envelope, and this brings C2PA's verifiability into direct contact with the kind of usage signal the rest of this survey describes.  It is worth being precise, though, about which part of verifiability it delivers.  Verifiability ({{verifiable}}) as defined here requires that an Expression has not been altered, and that it genuinely originates from a party authorised to make the assertion.  C2PA answers the first part cleanly.  The second is only answered halfway, in that it establishes that a particular signer made the assertion and that the assertion is unchanged since, but not that the assertion is true, nor that the signer had any standing to make it.  As C2PA's own materials put it, it proves who signed a claim, not whether the claim is true.  The integrity limb is solved; the authority limb, who is entitled to speak for the Resource, is left where the other mechanisms leave it.
 
 ## The FAIR Principles
 
@@ -308,3 +314,4 @@ The author thanks Pedro Ortiz Suarez, Erin Simon, Christopher Flammang, Alissa C
 - Corrected the TDMRep description to cover assets other than web content, and added a reference to the DSM directive.  (Issue #1.)
 - Noted that crawl-scale consumption requires low-context communication.  (IETF 126 discussion.)
 - Noted that the core criteria correspond to the structural/semantic interoperability distinction and to the data-model/information-model distinction of {{RFC3444}}.
+- Added the CAWG Training and Data Mining assertion to the C2PA section.  (Issue #7.)
