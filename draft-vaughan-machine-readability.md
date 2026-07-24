@@ -145,7 +145,7 @@ This document separates "machine readable" into five named properties, of which 
 
 The framework is general, and nothing in it is specific to any subject matter: an Expression conveying bibliographic records, sensor descriptions, or recipes can be assessed against it as readily as one conveying policy.  This document applies it in particular to two cases: the expression of usage preferences for automated processing, and the expression of legal terms of service.  The latter is treated at length in {{requirements-for-legal-terms}}, because legal text exposes the distance between the core criteria and an actionable outcome most sharply.  Terms that are easy to publish in a structured form are frequently impossible to act upon without human interpretation.
 
-This document does not define a vocabulary, a syntax, or a protocol, and it is not a product of any IETF working group.  It does not propose that any existing mechanism be changed.  Its contribution is a set of definitions against which existing and future mechanisms can be assessed.
+This document does not define a vocabulary, a syntax, or a protocol, and it is not a product of any IETF working group.  It does not propose that any existing mechanism be changed.  Its contribution is a set of definitions against which existing and future mechanisms can be assessed.  One boundary is worth stating explicitly: non-deterministic processing, of which interpretation by a language model is the current example, is out of scope as a means of satisfying any property defined here.  The framework concerns what an Expression makes deterministically checkable, and a process that can return different answers to the same question determines nothing; {{requirements-for-legal-terms}} sets out why such processing also fails, on its own terms, at the scale at which Agents operate.
 
 # Terminology
 
@@ -319,3 +319,4 @@ The author thanks Pedro Ortiz Suarez, Erin Simon, Christopher Flammang, Alissa C
 - Acknowledged the weak provenance implicit in publication at a well-known location ({{verifiable}}), and tied the Robots Exclusion Protocol's trust model to it.  (Issue #5.)
 - Reworded the "use must be fair" example ("might be interpretable"), and rewrote the Robots Exclusion Protocol paragraph in {{independence}}: its Expressions are strongly interpretable within a deliberately narrow vocabulary.  (Issue #6.)
 - Added the CAWG Training and Data Mining assertion to the C2PA section.  (Issue #7.)
+- Stated explicitly in {{introduction}} that non-deterministic processing is out of scope as a means of satisfying any property.  (Issue #8.)
