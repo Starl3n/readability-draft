@@ -204,6 +204,8 @@ Unlike the core criteria, actionability is not intrinsic to the Expression: it i
 
 An Expression is verifiable if an Agent can establish that it genuinely originates from a party authorised to make assertions about the Resource, and that it has not been altered.  A test for this could be whether there is a mechanism binding the Expression to an authorised Declaring Party and detecting tampering.  Verifiability is independent of the rest: an Expression may be signed and bound to its Declaring Party while remaining prose no machine can act on, and a perfectly interpretable Expression may carry no evidence of origin at all.
 
+There is a weak, implicit form of provenance short of this.  A Mechanism served from a well-known location, like robots.txt or TDMRep's `/.well-known/tdmrep.json`, carries some evidence of origin in the act of publication itself, since placing a file at that path is something only a party controlling the origin can do.  This is an assurance about who is speaking, to the extent that control of a domain identifies a party; it says nothing about the clarity or validity of what is said.  It also attaches to the act of serving rather than to the Expression, and so it neither survives redistribution of the Resource nor detects alteration.
+
 ## No Conformance Threshold {#no-threshold}
 
 This framework defines no conformance threshold, and it must not be read as one.  There is no number of satisfied properties at which an Expression becomes "machine readable", and none whose absence makes it not so.  The properties describe what an Expression provides; what an Agent requires depends on the decision before it.
@@ -314,4 +316,5 @@ The author thanks Pedro Ortiz Suarez, Erin Simon, Christopher Flammang, Alissa C
 - Corrected the TDMRep description to cover assets other than web content, and added a reference to the DSM directive.  (Issue #1.)
 - Noted that crawl-scale consumption requires low-context communication.  (IETF 126 discussion.)
 - Noted that the core criteria correspond to the structural/semantic interoperability distinction and to the data-model/information-model distinction of {{RFC3444}}.
+- Acknowledged the weak provenance implicit in publication at a well-known location ({{verifiable}}), and tied the Robots Exclusion Protocol's trust model to it.  (Issue #5.)
 - Added the CAWG Training and Data Mining assertion to the C2PA section.  (Issue #7.)
