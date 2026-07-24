@@ -4,8 +4,8 @@
 
 Network Working Group                                         T. Vaughan
 Internet-Draft                                   Common Crawl Foundation
-Intended status: Informational                               3 July 2026
-Expires: 4 January 2027
+Intended status: Informational                              24 July 2026
+Expires: 25 January 2027
 
 
 Defining Machine Readability for Usage Preferences and Policy Expression
@@ -16,12 +16,16 @@ Abstract
    The term "machine readable" is widely invoked when content usage
    preferences, rights, and legal terms are expressed for automated
    consumption, but it is rarely defined with enough precision to be
-   actionable.  This document distinguishes a series of properties
-   (discoverability, parseability, interpretability, actionability, and
-   verifiability) that together determine whether an expression of
-   preferences or policy can be reliably acted upon by a non-human agent
-   without human intervention.  It applies these properties to the case
-   of usage preferences and legal terms of service.
+   actionable.  This document resolves the term into two core criteria,
+   parseability and interpretability, which are properties of an
+   expression itself, and three further dimensions (discoverability,
+   actionability, and verifiability) which are orthogonal to the core
+   criteria and to one another, concerning as they do the expression's
+   place in a transaction rather than its content alone.  Together these
+   determine whether an expression of preferences or policy can be
+   reliably acted upon by a non-human agent without human intervention.
+   This document applies the framework to usage preferences and legal
+   terms of service.
 
 About This Document
 
@@ -48,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 January 2027.
+   This Internet-Draft will expire on 25 January 2027.
 
 Copyright Notice
 
@@ -68,13 +72,16 @@ Table of Contents
 
    1.  Introduction
    2.  Terminology
-   3.  A Ladder of Machine Readability
-     3.1.  Discoverable
-     3.2.  Parseable
-     3.3.  Interpretable
-     3.4.  Actionable
-     3.5.  Verifiable
-   4.  Separability
+   3.  Criteria for Machine Readability
+     3.1.  Core Criteria
+       3.1.1.  Parseable
+       3.1.2.  Interpretable
+     3.2.  Orthogonal Dimensions
+       3.2.1.  Discoverable
+       3.2.2.  Actionable
+       3.2.3.  Verifiable
+     3.3.  No Conformance Threshold
+   4.  Independence in Practice
    5.  Requirements for Legal Terms
    6.  Relationship to Existing Work
      6.1.  Robots Exclusion Protocol
@@ -86,10 +93,13 @@ Table of Contents
      6.7.  Schema.org
      6.8.  Dublin Core
      6.9.  C2PA
+     6.10. The FAIR Principles
    7.  Security Considerations
    8.  IANA Considerations
    Acknowledgments
    Informative References
+   Change Log
+     Since draft-vaughan-machine-readability-00
    Author's Address
 
 1.  Introduction
@@ -115,33 +125,50 @@ Table of Contents
    richly actionable yet undiscoverable, or trivially discoverable yet
    unverifiable.  Treating "machine readable" as a single binary
    property obscures these differences, and permits a Declaring Party to
-   claim machine readability on the strength of the least demanding
-   property while failing the ones that actually matter for automated
-   action.
+   claim machine readability on the strength of whichever property is
+   cheapest to provide, typically parseability, while failing the ones
+   that actually matter for automated action.
 
-   This document separates "machine readable" into five properties: an
-   Expression may be discoverable, parseable, interpretable, actionable,
-   and verifiable.  These are defined in Section 2 and Section 3.  They
-   are presented as a ladder, from least to most demanding, but they do
-   not strictly entail one another, and Section 4 sets out how they come
-   apart in practice.  The purpose of the framework is diagnostic: it
-   allows a given mechanism to be described in terms of precisely which
-   properties it provides, rather than asserted to be machine readable
-   as an undifferentiated whole.
+   This document separates "machine readable" into five named
+   properties, of which two are core and three are orthogonal to them.
+   The core criteria, parseable and interpretable, are properties of an
+   Expression itself: they can be assessed on the artefact alone, they
+   are defined in Section 3.1, and they are where a claim of machine
+   readability is actually won or lost.  The remaining properties
+   (discoverable, actionable, and verifiable, defined in Section 3.2)
+   concern the Expression's place in a transaction: whether an Agent can
+   find it, whether it settles the Agent's pending decision, and whether
+   its origin and integrity can be established.  Each can be present or
+   absent independently of the core criteria and of the others
+   (Section 4).  The purpose of the framework is diagnostic: it allows a
+   given mechanism to be described in terms of precisely which of these
+   properties its Expressions provide, rather than asserted to be
+   machine readable as an undifferentiated whole.  The framework defines
+   no conformance threshold, and must not be read as one (Section 3.3).
 
-   The framework is general, but this document applies it in particular
-   to two cases: the expression of usage preferences for automated
-   processing, and the expression of legal terms of service.  The latter
-   is treated at length in Section 5, because legal text exposes the gap
-   between the lower and higher rungs most sharply.  Terms that are easy
-   to publish in a structured form are frequently impossible to act upon
-   without human interpretation.
+   The framework is general, and nothing in it is specific to any
+   subject matter: an Expression conveying bibliographic records, sensor
+   descriptions, or recipes can be assessed against it as readily as one
+   conveying policy.  This document applies it in particular to two
+   cases: the expression of usage preferences for automated processing,
+   and the expression of legal terms of service.  The latter is treated
+   at length in Section 5, because legal text exposes the distance
+   between the core criteria and an actionable outcome most sharply.
+   Terms that are easy to publish in a structured form are frequently
+   impossible to act upon without human interpretation.
 
    This document does not define a vocabulary, a syntax, or a protocol,
    and it is not a product of any IETF working group.  It does not
    propose that any existing mechanism be changed.  Its contribution is
    a set of definitions against which existing and future mechanisms can
-   be assessed.
+   be assessed.  One boundary is worth stating explicitly: non-
+   deterministic processing, of which interpretation by a language model
+   is the current example, is out of scope as a means of satisfying any
+   property defined here.  The framework concerns what an Expression
+   makes deterministically checkable, and a process that can return
+   different answers to the same question determines nothing; Section 5
+   sets out why such processing also fails, on its own terms, at the
+   scale at which Agents operate.
 
 2.  Terminology
 
@@ -150,26 +177,114 @@ Table of Contents
       direction.  A web crawler, for instance.
 
    Expression:  A concrete artefact (for instance: a file, header,
-      embedded block, or metadata record) that conveys preferences,
-      rights, terms, or other policies about a resource.
+      embedded block, or metadata record) that conveys structured
+      information.  This document is concerned in particular with
+      Expressions that convey preferences, rights, terms, or other
+      policies about a Resource, but the framework does not depend on
+      that subject matter, and the Expression may even be the Resource
+      itself.  The Expression is the artefact rather than the assertions
+      it carries; a single Expression may convey one statement or many.
 
    Resource:  The content or asset to which an Expression pertains.
 
    Declaring Party:  The entity asserting an Expression.
 
-3.  A Ladder of Machine Readability
+   Mechanism:  A specification or convention (a protocol, vocabulary, or
+      metadata scheme, for instance) under which Expressions are
+      produced.  The properties defined in Section 3 apply to individual
+      Expressions; a Mechanism is assessed indirectly, through the
+      properties that Expressions produced under it are able to satisfy.
+      Statements of the form "TDMRep is parseable" are shorthand for
+      this.
 
-   The properties below are presented as a ladder, from least to most
-   demanding, because each higher rung is most useful when the rungs
-   beneath it also hold.  An Expression whose meaning is fixed
-   (interpretable) is of little utility if an Agent cannot find it
-   (discoverable).  For expository purposes this document treats the
-   rungs as cumulative.  They are not, however, strictly dependent, and
-   Section 4 describes the cases in which they come apart.
+3.  Criteria for Machine Readability
 
-   An Expression should have the following properties:
+   Machine readability, insofar as it is a property of an Expression at
+   all, rests on the two criteria defined in Section 3.1: whether the
+   Expression is parseable, and whether it is interpretable.  These are
+   intrinsic.  Each can be assessed on the artefact alone, without
+   reference to who consumes it, how it was obtained, or what its
+   consumer intends to do.  Interpretability presupposes parseability,
+   since a term cannot be fixed against a vocabulary before it has been
+   recovered from the artefact.
 
-3.1.  Discoverable
+   Three further properties matter in practice and are commonly folded
+   into the same term: whether an Expression is discoverable,
+   actionable, and verifiable.  These are defined in Section 3.2 as
+   dimensions orthogonal to the core criteria and to one another.  None
+   of them is intrinsic to the artefact.  Discoverability concerns the
+   path by which an Agent comes to hold the Expression; actionability
+   concerns the relation between the interpreted Expression and a
+   particular consumer's pending decision; verifiability concerns
+   whether the Expression's origin and integrity can be established.  An
+   Expression may possess any of them, in any combination, at any state
+   of the core criteria, and Section 4 illustrates how they come apart
+   in deployed mechanisms.
+
+   Assessment against this framework therefore yields a profile rather
+   than a score: a statement of which properties an Expression provides,
+   and for which purposes.  Section 3.3 makes explicit that no
+   particular profile constitutes a passing grade.
+
+3.1.  Core Criteria
+
+3.1.1.  Parseable
+
+   An Expression is parseable if its syntax is defined such that a
+   conforming Agent recovers the same structured representation from it
+   that any other conforming Agent would.  A test for this would be
+   whether there is a grammar or schema against which the Expression is
+   valid or invalid, deterministically.  Parseability is a property of
+   the Expression and its grammar alone, and can be assessed with no
+   knowledge of the Expression's consumers.  A terms-of-service document
+   carried in a JSON string is a useful case about which to be precise:
+   the JSON envelope is valid against a grammar and every conforming
+   Agent recovers the same envelope, but the terms inside it recover
+   only as an opaque string, with no grammar of their own.  Wrapping
+   prose in a parseable container does not make the prose parseable, and
+   this is the characteristic most often mistaken for machine
+   readability as a whole.
+
+3.1.2.  Interpretable
+
+   An Expression is interpretable if the meaning of its parsed elements
+   is fixed against a shared, identified vocabulary, such that two
+   conforming Agents assign the same meaning to the same element.  A
+   test for this is whether each term is resolvable to a definition that
+   is itself machine-identified (like a URI or a registry entry) rather
+   than relying on the Agent's own natural-language understanding.  This
+   characteristic separates something like a JSON field called
+   "may_train" (whose meaning is whatever a reader guesses) from
+   AIPREF's train-ai, whose meaning is pinned to a specification.  Like
+   parseability, interpretability is intrinsic: it is a property of the
+   binding between the Expression's terms and their published
+   definitions, not of any particular consumer.  It neither requires nor
+   licenses interpretation by the Agent in the natural-language sense;
+   where meaning has to be guessed, inferred, or modelled, the criterion
+   is not met.
+
+   The division of labour between the two core criteria is an old one
+   under new names.  Parseability and interpretability stand to one
+   another much as structural interoperability stands to semantic
+   interoperability: the first is agreement on form, the second
+   agreement on meaning, and systems have always been able to exchange
+   well-formed data that they do not understand alike.  [RFC3444] draws
+   the same line between a data model, which fixes how information is
+   encoded concretely enough to implement against, and an information
+   model, which fixes what the modelled things are and what they mean
+   independently of any encoding.  In those terms, an Expression that is
+   parseable but not interpretable is one whose data model is shared
+   while its information model remains private.
+
+3.2.  Orthogonal Dimensions
+
+   The three dimensions below are not further degrees of the core
+   criteria, and they are not ordered among themselves.  Each concerns
+   the Expression's place in a transaction between a Declaring Party and
+   an Agent, and each can hold or fail independently of the others and
+   of the core criteria.
+
+3.2.1.  Discoverable
 
    An Expression is discoverable if an Agent can locate it from the
    Resource, or from the act of acquiring the Resource, without out-of-
@@ -179,93 +294,129 @@ Table of Contents
    this test (fixed path, fetched first).  A terms page linked only from
    a human-readable footer fails.  The "without out-of-band knowledge"
    clause is what excludes something like "email us for our API terms".
+   Discoverability is a property of deployment rather than of the
+   artefact: the same file is discoverable at a well-known location and
+   undiscoverable behind an unadvertised path, without a byte of it
+   changing.
 
-3.2.  Parseable
+3.2.2.  Actionable
 
-   An Expression is parseable if its syntax is defined such that a
-   conforming Agent recovers the same structured representation from it
-   that any other conforming Agent would.  A test for this would be
-   whether there is a grammar or schema against which the Expression is
-   valid or invalid, deterministically.  A terms-of-service document
-   carried in a JSON string is a useful case about which to be precise:
-   the JSON envelope is valid against a grammar and every conforming
-   Agent recovers the same envelope, but the terms inside it recover
-   only as an opaque string, with no grammar of their own.  Wrapping
-   prose in a parseable container does not make the prose parseable, and
-   this is the characteristic most often mistaken for machine
-   readability as a whole.
+   An Expression is actionable, for a given Agent and a given pending
+   action, if the interpreted Expression determines a definite outcome
+   for that action (like "permitted", "forbidden", or something like
+   "conditional-based-on-a-checkable-condition") without recourse to a
+   human.  A test for this could be whether the Agent can map the
+   interpreted Expression onto its specific pending action and get an
+   answer.
 
-3.3.  Interpretable
+   Unlike the core criteria, actionability is not intrinsic to the
+   Expression: it is a relation between the Expression and a consumer's
+   circumstances, and the same Expression may be actionable for one
+   Agent and not for another.  "Training forbidden" is actionable
+   against the action "train" and silent against the action "index".
+   The scope of application is part of the same relation: an Expression
+   may determine an outcome for a Resource as a whole while determining
+   none for an excerpt or a derivative of it.  An Expression that says
+   "use must be fair" might be interpretable, but it is actionable for
+   no Agent, because 'fair' is not a checkable condition.
 
-   An Expression is interpretable if the meaning of its parsed elements
-   is fixed against a shared, identified vocabulary, such that two
-   conforming Agents assign the same meaning to the same element.  A
-   test for this is whether each term is resolvable to a definition that
-   is itself machine-identified, (like a URI or a registry entry) rather
-   than relying on the Agent's own natural-language understanding.  This
-   characteristic separates something like a JSON field called
-   "may_train" (whose meaning is whatever a reader guesses) from
-   AIPREF's train-ai, whose meaning is pinned to a specification.
+   "Copyright in the US has run out" is an example of something that is
+   interpretable but not necessarily actionable, depending on what you
+   are trying to do.  This ties to verifiability, since one would need
+   to verify such a statement in order to take any action at all.
 
-3.4.  Actionable
-
-   An Expression is actionable if an interpretable Expression
-   additionally determines, for the Agent's purposes, a definite outcome
-   (like "permitted", "forbidden", or something like "conditional-based-
-   on-a-checkable-condition") without recourse to a human.  A test for
-   this could be whether the Agent can map the interpreted Expression
-   onto its specific pending action and get an answer.  An Expression
-   that says "use must be fair" is interpretable but admits no definite
-   outcome, because 'fair' is not a checkable condition.  One that says
-   "training forbidden" is actionable against the action "train".
-
-3.5.  Verifiable
+3.2.3.  Verifiable
 
    An Expression is verifiable if an Agent can establish that it
    genuinely originates from a party authorised to make assertions about
    the Resource, and that it has not been altered.  A test for this
    could be whether there is a mechanism binding the Expression to an
-   authorised Declaring Party and detecting tampering.
+   authorised Declaring Party and detecting tampering.  Verifiability is
+   independent of the rest: an Expression may be signed and bound to its
+   Declaring Party while remaining prose no machine can act on, and a
+   perfectly interpretable Expression may carry no evidence of origin at
+   all.
 
-4.  Separability
+   There is a weak, implicit form of provenance short of this.  A
+   Mechanism served from a well-known location, like robots.txt or
+   TDMRep's /.well-known/tdmrep.json, carries some evidence of origin in
+   the act of publication itself, since placing a file at that path is
+   something only a party controlling the origin can do.  This is an
+   assurance about who is speaking, to the extent that control of a
+   domain identifies a party; it says nothing about the clarity or
+   validity of what is said.  It also attaches to the act of serving
+   rather than to the Expression, and so it neither survives
+   redistribution of the Resource nor detects alteration.
 
-   The ladder metaphor is an expository convenience, and not a claim
-   that each characteristic actually strictly entails the ones below it.
-   Real Expressions satisfy these properties in patches.
+3.3.  No Conformance Threshold
 
-   The Robots Exclusion Protocol [RFC9309] is both highly discoverable
-   and parseable.  It is fetched from a fixed location before any other
-   resource, and its grammar is defined in ABNF.  It is deliberately not
-   interpretable in the rich sense used here, because its vocabulary is
-   confined to access control (allow and disallow against paths) and
-   carries no shared semantics for what an Agent may do with content
-   once fetched.  It provides no verifiability whatsoever and trust
-   derives entirely from the authority of the server.
+   This framework defines no conformance threshold, and it must not be
+   read as one.  There is no number of satisfied properties at which an
+   Expression becomes "machine readable", and none whose absence makes
+   it not so.  The properties describe what an Expression provides; what
+   an Agent requires depends on the decision before it.
+
+   The threshold reading can be abused from both sides.  A Declaring
+   Party may claim machine readability on the strength of the cheapest
+   property, typically parseability, while failing the ones that matter
+   for the consumer's decision; the survey in Section 6 and the
+   discussion in Section 5 are largely about that direction.  In the
+   other direction, an Agent may disregard an Expression on the ground
+   that some property is unsatisfied even though the properties its
+   decision actually depends upon are met.  An unverifiable reservation
+   that is discoverable, parseable, interpretable, and actionable for
+   the pending action still communicates the Declaring Party's position;
+   the absence of verifiability changes what the Agent can prove about
+   the Expression, not what was asserted.  Section 7 discusses both
+   hazards.
+
+   Whether an Expression satisfies a legal requirement of machine
+   readability, such as the reservation "in an appropriate manner, such
+   as machine-readable means" contemplated by Article 4(3) of the EU's
+   Digital Single Market copyright directive [DSM], is a question of law
+   on which this document takes no position.
+
+4.  Independence in Practice
+
+   Real Expressions satisfy the properties of Section 3 in patches, and
+   the patchwork is the point of assessing them separately.
+
+   The Robots Exclusion Protocol [RFC9309] is highly discoverable and
+   parseable: it is fetched from a fixed location before any other
+   resource, and its grammar is defined in ABNF.  Within its own
+   vocabulary it is strongly interpretable as well, since allow and
+   disallow against paths are terms whose meaning the specification
+   itself pins, and two conforming crawlers assign them the same
+   meaning.  What it lacks is breadth rather than rigour.  The
+   vocabulary is confined to access control and carries no shared
+   semantics for what an Agent may do with content once fetched, so for
+   a usage decision there is nothing in it to interpret.  It provides no
+   formal verifiability, and trust derives from the authority of the
+   server over its own domain, which is the weak provenance of
+   Section 3.2.3 and nothing more.
 
    Conversely, a cryptographic provenance Expression may be verifiable
    and parseable while saying nothing about usage permissions at all,
-   and so contribute nothing on the actionable rung for a usage
-   decision.
+   and so contribute nothing towards actionability for a usage decision.
 
-   An Expression may, therefore, occupy a high rung while failing a
-   lower one, or satisfy a lower rung richly while being absent higher
-   up.  The value of the ladder is diagnostic in that it lets one state
-   precisely which property a given mechanism provides and, more
-   importantly, which it does not, rather than asserting that a
-   mechanism is or is not "machine readable" as an undifferentiated
+   The value of the framework is diagnostic in that it lets one state
+   precisely which properties a given mechanism's Expressions provide
+   and, more importantly, which they do not, rather than asserting that
+   a mechanism is or is not "machine readable" as an undifferentiated
    whole.
 
 5.  Requirements for Legal Terms
 
    The properties of Section 3 are general, but legal terms of service
-   are where the gap between the lower and higher rungs is widest.
-   Terms are easy to publish in a parseable form, and may even reach
-   Section 3.3, but in most cases they stop short of Section 3.4: they
-   cannot be acted upon without a human to interpret them.  A document
-   may be structurally sound, valid against a schema, and served from a
-   location an Agent can discover, and still offer that Agent no
-   machine-determinable answer to the one question it actually has,
-   which is whether the action it is about to take is permitted.
+   are where the distance between the core criteria and an actionable
+   outcome is widest.  Terms are easy to publish in a parseable form,
+   and may even reach Section 3.1.2, but in most cases they are
+   actionable for no Agent: they cannot be acted upon without a human to
+   interpret them.  A document may be structurally sound, valid against
+   a schema, and served from a location an Agent can discover, and still
+   offer that Agent no machine-determinable answer to the one question
+   it actually has, which is whether the action it is about to take is
+   permitted.
 
    At crawl scale this ceases to be a nuisance and becomes a barrier.
    An Agent operating across the web encounters resources in numbers
@@ -275,7 +426,11 @@ Table of Contents
    varying from one site to the next, quickly enough, reliably enough,
    and cheaply enough to decide the fetch.  A mechanism that demands
    this does not describe a workable system.  It describes a human
-   reading legalese, repeated some billions of times.
+   reading legalese, repeated some billions of times.  What works at
+   that scale is low-context communication: an Expression that carries
+   everything the Agent needs, fixed against shared definitions, rather
+   than one whose meaning must be recovered from surrounding context at
+   the moment of consumption.
 
    It is sometimes proposed that a large language model (LLM) could
    close the gap, reading the terms at scale and reporting what they
@@ -295,9 +450,9 @@ Table of Contents
 
    The mechanisms surveyed below each address some part of the problem
    this document frames, and none addresses all of it.  They are
-   described here in terms of what they do and where they sit against
-   the properties of Section 3, not to rank them, but to show that the
-   framework describes existing work rather than displacing it.
+   described here in terms of what they do and which of the properties
+   of Section 3 their Expressions provide, not to rank them, but to show
+   that the framework describes existing work rather than displacing it.
 
 6.1.  Robots Exclusion Protocol
 
@@ -311,8 +466,9 @@ Table of Contents
    content once fetched.  It carries no provenance or integrity
    mechanism, and a crawler's trust in it rests entirely on the server's
    authority over the domain.  It is the clearest example in this
-   document of a mechanism that sits firmly on the lower rungs and makes
-   no claim to the higher ones.
+   document of narrowness by design: complete on discoverability and
+   parseability, strongly interpretable within a vocabulary that extends
+   no further than access control, and silent on everything beyond it.
 
 6.2.  AIPREF
 
@@ -324,13 +480,13 @@ Table of Contents
    meaning against a specification, and an attachment mechanism
    ([I-D.ietf-aipref-attach]), which conveys those preferences through
    an HTTP header and through an extension to robots.txt.  The
-   vocabulary is what lets AIPREF reach the interpretable rung where
-   most usage signals stop short: a crawler encountering train-ai=n
-   recovers not merely a string but a term whose meaning is pinned, as
-   discussed at Section 3.  AIPREF is explicit that preferences are not
-   a security mechanism, and it provides no verifiability.  It
-   establishes neither who set a preference nor that it is unaltered.
-   It is (at the time of writing) a work in progress.
+   vocabulary is what carries AIPREF past parseability to
+   interpretability, where most usage signals stop short: a crawler
+   encountering train-ai=n recovers not merely a string but a term whose
+   meaning is pinned, as discussed at Section 3.1.2.  AIPREF is explicit
+   that preferences are not a security mechanism, and it provides no
+   verifiability.  It establishes neither who set a preference nor that
+   it is unaltered.  It is (at the time of writing) a work in progress.
 
 6.3.  ODRL
 
@@ -339,17 +495,18 @@ Table of Contents
    assets.  Permissions, prohibitions, and duties are attached to
    actions drawn from an identified vocabulary and narrowed by
    constraints such as time, place, or purpose.  Of the mechanisms
-   surveyed here it reaches highest on the interpretable and actionable
-   rungs, because its terms are pinned to a published vocabulary and its
-   rules are structured precisely enough that an evaluator can decide
-   whether a given action is permitted.  That expressive power is also
-   its difficulty.  ODRL says nothing in itself about where a policy is
-   to be found or whether it is genuine.  Discovery is left to other
-   mechanisms that link an asset to its policy, and integrity is left to
-   metadata borrowed from outside vocabularies, since ODRL 2.2 carries
-   no native means to establish that a policy is authentic or unaltered.
-   It is a rich answer to interpretability and actionability that leaves
-   discoverability and verifiability to others.
+   surveyed here its Expressions go furthest on interpretability, and
+   furthest towards actionable outcomes, because its terms are pinned to
+   a published vocabulary and its rules are structured precisely enough
+   that an evaluator can decide whether a given action is permitted.
+   That expressive power is also its difficulty.  ODRL says nothing in
+   itself about where a policy is to be found or whether it is genuine.
+   Discovery is left to other mechanisms that link an asset to its
+   policy, and integrity is left to metadata borrowed from outside
+   vocabularies, since ODRL 2.2 carries no native means to establish
+   that a policy is authentic or unaltered.  It is a rich answer to
+   interpretability and actionability that leaves discoverability and
+   verifiability to others.
 
 6.4.  DPV
 
@@ -360,15 +517,15 @@ Table of Contents
    extensions, concepts drawn from regulations such as the GDPR and the
    EU AI Act.  It is included here not because a crawler would discover
    and act on a DPV document in the way it discovers robots.txt, but
-   because of the role it plays on the interpretable rung.  DPV is
-   designed to be used inside other mechanisms.  Its terms can supply
-   the meaning of a condition in an ODRL policy, so that a constraint
-   refers to a defined concept of purpose or jurisdiction rather than to
-   a bare string.  In the vocabulary of Section 3 it is an
-   interpretability resource, a source of identified, shared meaning
-   that other Expressions can draw on, rather than a discoverable, self-
-   standing signal in its own right.  Like the others surveyed here it
-   provides provenance metadata but no cryptographic integrity, and it
+   because of the role it plays in interpretability.  DPV is designed to
+   be used inside other mechanisms.  Its terms can supply the meaning of
+   a condition in an ODRL policy, so that a constraint refers to a
+   defined concept of purpose or jurisdiction rather than to a bare
+   string.  In the vocabulary of Section 3 it is an interpretability
+   resource, a source of identified, shared meaning that other
+   Expressions can draw on, rather than a discoverable, self-standing
+   signal in its own right.  Like the others surveyed here it provides
+   provenance metadata but no cryptographic integrity, and it
    establishes nothing about who asserted a given statement.
 
 6.5.  CC REL
@@ -379,14 +536,14 @@ Table of Contents
    machine-readable form.  It is RDF-based and designed to be embedded
    where the work lives: as RDFa attributes in HTML, or as XMP metadata
    inside a media file so that the licence travels with the file when it
-   is copied.  Its terms are interpretable in the sense Section 3
+   is copied.  Its terms are interpretable in the sense Section 3.1.2
    requires, since a CC licence is identified by a URI that resolves to
    a defined set of permissions, requirements, and prohibitions rather
    than to free text, and it is the most widely deployed of the
    mechanisms surveyed here by virtue of the licences themselves.  Its
-   placement on the ladder is otherwise mixed: discovery depends on the
-   work carrying the embedded markup, which an Agent can read where it
-   is present but cannot rely on in general; and while CC REL records
+   profile against the other properties is mixed: discovery depends on
+   the work carrying the embedded markup, which an Agent can read where
+   it is present but cannot rely on in general; and while CC REL records
    attribution and source, giving a measure of provenance, the
    specification itself provides no cryptographic means to confirm that
    a licence statement is authentic or unaltered.  It is also worth
@@ -397,18 +554,19 @@ Table of Contents
 
    The TDM Reservation Protocol (TDMRep) [TDMREP], a W3C Community Group
    Final Report, is a deliberately simple mechanism by which a rights
-   holder can reserve text-and-data-mining rights over web content,
-   developed as a technical response to the reservation contemplated by
-   Article 4 of the EU's Digital Single Market copyright directive.  Its
-   core is a single property, tdm-reservation, set to 1 or 0, optionally
-   accompanied by a URL pointing to a fuller policy.  A crawler finds it
-   in a file at a well-known location that the specification directs an
-   Agent to fetch before "mining" anything on the server, with HTTP
-   headers and in-document metadata as alternatives.  Of everything
-   surveyed here, TDMRep climbs the crawler-relevant rungs most cleanly
-   for its narrow question: it is discoverable by fixed convention,
-   parseable, interpretable because tdm-reservation is a defined term
-   rather than a guessable field, and actionable because its value
+   holder can reserve text-and-data-mining rights over web content or
+   other kinds of assets, developed as a technical response to the
+   reservation contemplated by Article 4 of the EU's Digital Single
+   Market copyright directive [DSM].  Its core is a single property,
+   tdm-reservation, set to 1 or 0, optionally accompanied by a URL
+   pointing to a fuller policy.  A crawler finds it in a file at a well-
+   known location that the specification directs an Agent to fetch
+   before "mining" anything on the server, with HTTP headers and in-
+   document metadata as alternatives.  Of everything surveyed here,
+   TDMRep answers the crawler's question most cleanly: its Expressions
+   are discoverable by fixed convention, parseable, interpretable
+   because tdm-reservation is a defined term rather than a guessable
+   field, and actionable for the Agent's purpose because the value
    yields a definite outcome against the act of "mining".  Where it
    stops, like the others, is verifiability.  The specification provides
    no cryptographic means to establish who set a reservation or that it
@@ -456,42 +614,67 @@ Table of Contents
    giving official permission to do something with the resource.  Like
    schema.org and CC REL, Dublin Core is a way of attaching a rights
    value to a described work rather than a policy language in its own
-   right, and it sits on the ladder in much the same place.  Where the
-   value of dcterms:license is a URI resolving to a licence of fixed
-   meaning, the annotation is interpretable; where it is a free-text
-   statement of rights, as dcterms:rights commonly is, it reaches no
-   further than parseable, and a consuming Agent is left stuck with a
-   string it can't resolve.  Dublin Core's own guidance is very open
-   about this, noting that a bare URI recorded as a value string gives a
-   consuming application no reliable way to tell it apart from any other
-   string and so to treat it as an identifier.  It provides, like the
-   other embedded-metadata schemes, provenance (in the weak sense of
-   recorded attribution) but no means to verify that a rights statement
-   is authentic or unaltered.
+   right, and its profile is much the same.  Where the value of
+   dcterms:license is a URI resolving to a licence of fixed meaning, the
+   annotation is interpretable; where it is a free-text statement of
+   rights, as dcterms:rights commonly is, it is parseable and nothing
+   more, and a consuming Agent is left stuck with a string it can't
+   resolve.  Dublin Core's own guidance is very open about this, noting
+   that a bare URI recorded as a value string gives a consuming
+   application no reliable way to tell it apart from any other string
+   and so to treat it as an identifier.  It provides, like the other
+   embedded-metadata schemes, provenance (in the weak sense of recorded
+   attribution) but no means to verify that a rights statement is
+   authentic or unaltered.
 
 6.9.  C2PA
 
    The Coalition for Content Provenance and Authenticity (C2PA) [C2PA]
    is unlike everything else surveyed here, because it is not a usage-
    preference or rights mechanism at all but a provenance one, and it is
-   the only mechanism in the survey that answers the verifiability rung.
-   C2PA binds a cryptographically signed manifest to a digital asset,
-   recording assertions about the asset's origin and editing history;
-   the signature and a hash binding make the manifest tamper-evident, so
-   that any later alteration of the content or the manifest can be
-   detected.  This is genuine verifiability of a kind none of the others
-   provide.  It is worth being precise, though, about which part of
-   verifiability it delivers.  The verifiable rung (Section 3.5) as
-   defined here asserts that an Expression has not been altered, and
-   that it genuinely originates from a party authorised to make the
-   assertion.  C2PA answers the first part cleanly.  The second is only
-   answered halfway, in that it establishes that a particular signer
-   made the assertion and that the assertion is unchanged since, but not
-   that the assertion is true, nor that the signer had any standing to
-   make it.  As C2PA's own materials put it, it proves who signed a
-   claim, not whether the claim is true.  The integrity limb is solved;
-   the authority limb, who is entitled to speak for the Resource, is
-   left where the other mechanisms leave it.
+   the only mechanism in the survey that answers the verifiable
+   dimension.  C2PA binds a cryptographically signed manifest to a
+   digital asset, recording assertions about the asset's origin and
+   editing history; the signature and a hash binding make the manifest
+   tamper-evident, so that any later alteration of the content or the
+   manifest can be detected.  This is genuine verifiability of a kind
+   none of the others provide.  Nor is a manifest confined to provenance
+   history: the Creator Assertions Working Group defines a Training and
+   Data Mining assertion [CAWG-TDM] through which a manifest can carry
+   usage preferences, stating whether an asset may be used for data
+   mining or for AI training, including generative training, inside the
+   signed envelope, and this brings C2PA's verifiability into direct
+   contact with the kind of usage signal the rest of this survey
+   describes.  It is worth being precise, though, about which part of
+   verifiability it delivers.  Verifiability (Section 3.2.3) as defined
+   here requires that an Expression has not been altered, and that it
+   genuinely originates from a party authorised to make the assertion.
+   C2PA answers the first part cleanly.  The second is only answered
+   halfway, in that it establishes that a particular signer made the
+   assertion and that the assertion is unchanged since, but not that the
+   assertion is true, nor that the signer had any standing to make it.
+   As C2PA's own materials put it, it proves who signed a claim, not
+   whether the claim is true.  The integrity limb is solved; the
+   authority limb, who is entitled to speak for the Resource, is left
+   where the other mechanisms leave it.
+
+6.10.  The FAIR Principles
+
+   The FAIR principles [FAIR], under which research data should be
+   findable, accessible, interoperable, and reusable, are sometimes
+   offered as a neighbouring frame for this document, and the
+   correspondence of names (findable and discoverable, interoperable and
+   interpretable) invites the comparison.  The two are not functionally
+   equivalent.  FAIR states stewardship goals for data and for the
+   infrastructure that holds it, directed at making datasets reusable
+   over time; its principles are aspirations for an ecosystem rather
+   than tests of an artefact.  The framework here asks a narrower and
+   more mechanical question, whether a specific Expression supports a
+   specific automated decision, and it can be applied to a single
+   artefact in isolation.  A repository can be exemplary against FAIR
+   while every rights statement in it stops at parseable, and a single
+   TDMRep file can satisfy both core criteria and be discoverable and
+   actionable while participating in no FAIR ecosystem at all.
 
 7.  Security Considerations
 
@@ -501,7 +684,7 @@ Table of Contents
    arise concern how the properties it defines are relied upon by Agents
    making usage decisions.
 
-   An Expression that is not verifiable (Section 3.5) can be forged,
+   An Expression that is not verifiable (Section 3.2.3) can be forged,
    altered in transit or at rest, or published by a party with no
    authority over the Resource.  An Agent that acts on unverifiable
    Expressions is trusting, at most, the channel over which it obtained
@@ -520,12 +703,21 @@ Table of Contents
    mechanism binds the Expression to the Resource in some tamper-evident
    way.
 
-   Conflation of the lower rungs with the higher ones is itself a
-   hazard.  An Agent that treats a parseable Expression as actionable is
-   acting on content it has not, in the sense of Section 3, actually
-   understood, and a Declaring Party or third party can exploit that gap
-   by presenting structurally valid Expressions whose free-text content
+   Conflation of the properties with one another is itself a hazard.  An
+   Agent that treats a parseable Expression as actionable is acting on
+   content it has not, in the sense of Section 3, actually understood,
+   and a Declaring Party or third party can exploit that gap by
+   presenting structurally valid Expressions whose free-text content
    does not mean what the Agent's heuristics assume it means.
+
+   The converse abuse is dismissal by threshold.  Because the framework
+   defines no conformance level (Section 3.3), an assessment that an
+   Expression lacks some property is not a finding that the Expression
+   may be ignored.  A party wishing to disregard preferences could
+   otherwise hold that nothing is machine readable unless it provides
+   all five properties, a bar that no deployed mechanism meets.  An
+   Agent that declines to honour any Expression short of, say,
+   verifiability is not applying this framework but exploiting it.
 
    Finally, the use of language models to interpret natural-language
    terms, discussed in Section 5, adds an attack surface beyond the
@@ -542,9 +734,11 @@ Table of Contents
 
 Acknowledgments
 
-   The author thanks Pedro Ortiz Suarez, Erin Simon, and Christopher
-   Flammang for their reviews of this document and their suggested
-   additions.
+   The author thanks Pedro Ortiz Suarez, Erin Simon, Christopher
+   Flammang, Alissa Cooper, Henk Birkholz, and Carsten Bormann for their
+   reviews of this document and their suggested additions, and the
+   participants in the discussion of this document at IETF 126, whose
+   observations shaped the reframing in this version.
 
 Informative References
 
@@ -552,6 +746,10 @@ Informative References
               "Coalition for Content Provenance and Authenticity (C2PA)
               Technical Specification", n.d.,
               <https://c2pa.org/specifications/>.
+
+   [CAWG-TDM] Creator Assertions Working Group, "Training and Data
+              Mining Assertion", n.d.,
+              <https://cawg.io/training-and-data-mining/>.
 
    [CCREL]    Abelson, H., Adida, B., Linksvayer, M., and N. Yergler,
               "ccREL: The Creative Commons Rights Expression Language",
@@ -567,6 +765,17 @@ Informative References
               Vocabulary (DPV)", W3C Community Group Final Report, 1
               August 2024, <https://www.w3.org/community/reports/dpvcg/
               CG-FINAL-dpv-20240801/>.
+
+   [DSM]      European Parliament and Council of the European Union,
+              "Directive (EU) 2019/790 of the European Parliament and of
+              the Council on copyright and related rights in the Digital
+              Single Market", 17 April 2019,
+              <https://eur-lex.europa.eu/eli/dir/2019/790/oj>.
+
+   [FAIR]     Wilkinson, M. D., Dumontier, M., Aalbersberg, I. J., and
+              B. Mons, "The FAIR Guiding Principles for scientific data
+              management and stewardship", DOI 10.1038/sdata.2016.18, 15
+              March 2016, <https://doi.org/10.1038/sdata.2016.18>.
 
    [I-D.ietf-aipref-attach]
               Illyes, G. and M. Thomson, "Associating AI Usage
@@ -586,6 +795,11 @@ Informative References
               W3C Recommendation, 15 February 2018,
               <https://www.w3.org/TR/odrl-model/>.
 
+   [RFC3444]  Pras, A. and J. Schoenwaelder, "On the Difference between
+              Information Models and Data Models", RFC 3444,
+              DOI 10.17487/RFC3444, January 2003,
+              <https://www.rfc-editor.org/rfc/rfc3444>.
+
    [RFC9309]  Koster, M., Illyes, G., Zeller, H., and L. Sassman,
               "Robots Exclusion Protocol", RFC 9309,
               DOI 10.17487/RFC9309, September 2022,
@@ -599,6 +813,67 @@ Informative References
               W3C Community Group Final Report, 10 May 2024,
               <https://www.w3.org/community/reports/tdmrep/CG-FINAL-
               tdmrep-20240510/>.
+
+Change Log
+
+   This section is to be removed before publishing as an RFC.
+
+Since draft-vaughan-machine-readability-00
+
+   *  Replaced the ladder framing.  Parseability and interpretability
+      are now defined as the two core, intrinsic criteria (Section 3.1),
+      and discoverability, actionability, and verifiability as
+      dimensions orthogonal to them and to one another (Section 3.2).
+      The former Separability section is now Section 4.  (IETF 126
+      discussion.)
+
+   *  Added Section 3.3: the framework defines no conformance threshold,
+      Agents should not dismiss Expressions whose relevant properties
+      are met, and legal machine-readability requirements such as DSM
+      Article 4(3) are out of scope.  Added the corresponding dismissal-
+      by-threshold hazard to Section 7.  (Issue #3.)
+
+   *  Made actionability explicitly relative to a particular Agent,
+      action, and context, including the scope of application.  (IETF
+      126 discussion.)
+
+   *  Generalised the definition of Expression to structured information
+      in general, keeping usage preferences and legal terms as this
+      document's applied focus, and noted that an Expression may itself
+      be the Resource.  (Issue #2.)
+
+   *  Added Mechanism to the terminology: the framework assesses
+      Expressions, and mechanisms are assessed through the Expressions
+      they yield.  (IETF 126 discussion.)
+
+   *  Added [FAIR] to the survey, distinguishing this framework from the
+      FAIR principles.  (IETF 126 discussion.)
+
+   *  Corrected the TDMRep description to cover assets other than web
+      content, and added a reference to the DSM directive.  (Issue #1.)
+
+   *  Noted that crawl-scale consumption requires low-context
+      communication.  (IETF 126 discussion.)
+
+   *  Noted that the core criteria correspond to the structural/semantic
+      interoperability distinction and to the data-model/information-
+      model distinction of [RFC3444].
+
+   *  Acknowledged the weak provenance implicit in publication at a
+      well-known location (Section 3.2.3), and tied the Robots Exclusion
+      Protocol's trust model to it.  (Issue #5.)
+
+   *  Reworded the "use must be fair" example ("might be
+      interpretable"), and rewrote the Robots Exclusion Protocol
+      paragraph in Section 4: its Expressions are strongly interpretable
+      within a deliberately narrow vocabulary.  (Issue #6.)
+
+   *  Added the CAWG Training and Data Mining assertion to the C2PA
+      section.  (Issue #7.)
+
+   *  Stated explicitly in Section 1 that non-deterministic processing
+      is out of scope as a means of satisfying any property.  (Issue
+      #8.)
 
 Author's Address
 
