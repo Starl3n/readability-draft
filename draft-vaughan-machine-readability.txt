@@ -4,8 +4,8 @@
 
 Network Working Group                                         T. Vaughan
 Internet-Draft                                   Common Crawl Foundation
-Intended status: Informational                              24 July 2026
-Expires: 25 January 2027
+Intended status: Informational                              25 July 2026
+Expires: 26 January 2027
 
 
 Defining Machine Readability for Usage Preferences and Policy Expression
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 January 2027.
+   This Internet-Draft will expire on 26 January 2027.
 
 Copyright Notice
 
@@ -99,6 +99,7 @@ Table of Contents
    Acknowledgments
    Informative References
    Change Log
+     Since draft-vaughan-machine-readability-01
      Since draft-vaughan-machine-readability-00
    Author's Address
 
@@ -735,10 +736,10 @@ Table of Contents
 Acknowledgments
 
    The author thanks Pedro Ortiz Suarez, Erin Simon, Christopher
-   Flammang, Alissa Cooper, Henk Birkholz, and Carsten Bormann for their
-   reviews of this document and their suggested additions, and the
-   participants in the discussion of this document at IETF 126, whose
-   observations shaped the reframing in this version.
+   Flammang, Mark Clements, Alissa Cooper, Henk Birkholz, and Carsten
+   Bormann for their reviews of this document and their suggested
+   additions, and the participants in the discussion of this document at
+   IETF 126, whose observations shaped the reframing in this version.
 
 Informative References
 
@@ -817,6 +818,10 @@ Informative References
 Change Log
 
    This section is to be removed before publishing as an RFC.
+
+Since draft-vaughan-machine-readability-01
+
+   *  Added further acknowledgements.
 
 Since draft-vaughan-machine-readability-00
 
