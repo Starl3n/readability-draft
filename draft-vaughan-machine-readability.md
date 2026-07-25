@@ -297,12 +297,17 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-The author thanks Pedro Ortiz Suarez, Erin Simon, Christopher Flammang, Alissa Cooper, Henk Birkholz, and Carsten Bormann for their reviews of this document and their suggested additions, and the participants in the discussion of this document at IETF 126, whose observations shaped the reframing in this version.
+The author thanks Pedro Ortiz Suarez, Erin Simon, Christopher Flammang, Mark Clements, Alissa Cooper, Henk Birkholz, and Carsten Bormann for their reviews of this document and their suggested additions, and the participants in the discussion of this document at IETF 126, whose observations shaped the reframing in this version.
 
 --- back
 
 # Change Log
 {:numbered="false" removeinrfc="true"}
+
+## Since draft-vaughan-machine-readability-01
+{:numbered="false"}
+
+- Added further acknowledgements.
 
 ## Since draft-vaughan-machine-readability-00
 {:numbered="false"}
