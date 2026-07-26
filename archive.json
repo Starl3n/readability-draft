@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-23T03:31:24.970901+00:00",
+  "timestamp": "2026-07-26T03:38:24.465336+00:00",
   "repo": "thunderpoot/readability-draft",
   "labels": [
     {
@@ -55,7 +55,7 @@
       "id": "I_kwDOTI7wBc8AAAABHlsTSA",
       "title": "TDMRep description overstates web-content scope (suggested edit from Laurent Le Meur)",
       "url": "https://github.com/thunderpoot/readability-draft/issues/1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thunderpoot",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -64,24 +64,32 @@
       "labels": [],
       "body": "https://github.com/thunderpoot/readability-draft/blob/4cddc0331f0885161175b2a1d9d98296b3965b7f/draft-vaughan-machine-readability.md?plain=1#L202-L204\n\nLaurent Le Meur (TDMRep editor) notes that the -00's description of TDMRep frames it as a mechanism for web content only, when the protocol also covers other kinds of assets (e.g. via file-format metadata).\n\nHis suggested replacement text:\n```\nThe TDM Reservation Protocol (TDMRep) [TDMREP], a W3C Community Group Final Report, is a deliberately simple mechanism by which a rights holder can reserve text-and-data-mining rights over web content or other kinds of assets, developed as a technical response to the reservation contemplated by Article 4 of the EU's Digital Single Market copyright directive.\n```\n\n**Action:** adopt the suggested wording (or equivalent) in the TDMRep description.\n\n**Target:** -01, to be pushed following discussions at IETF 126 Vienna.",
       "createdAt": "2026-07-03T14:29:39Z",
-      "updatedAt": "2026-07-04T00:02:40Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-07-24T15:12:08Z",
+      "closedAt": "2026-07-24T15:12:08Z",
+      "comments": [
+        {
+          "author": "thunderpoot",
+          "authorAssociation": "OWNER",
+          "body": "Adopted in -01: the TDMRep description now reads \"reserve text-and-data-mining rights over web content or other kinds of assets\", and the DSM directive is now an informative reference. Thanks to Laurent for the correction.",
+          "createdAt": "2026-07-24T15:12:08Z",
+          "updatedAt": "2026-07-24T15:12:08Z"
+        }
+      ]
     },
     {
       "number": 2,
       "id": "I_kwDOTI7wBc8AAAABHoTrSA",
       "title": "Definition of 'Expression'",
       "url": "https://github.com/thunderpoot/readability-draft/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "appydog",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "This is an excellent proposal and, I think, one that will be really, really useful.\n\nOne thought - I think the definition of `Expression` is too tight.\n\nThe introduction states:\n\n> The framework is general, but this document applies it in particular\n> to two cases: the expression of usage preferences for automated\n> processing, and the expression of legal terms of service.\n\nI understand where you're coming from with this, as these are areas that are quite current.  But looking to the long-term I think that inclusion of content in the RFC that is specifically related to these areas should be illustrative rather than built into the framework itself (either explicitly or implicitly), otherwise that could be a reason to think that the RFC doesn't apply to a particular use-case.  I think, from your wording, that is your intent, but I'm stating it here to make it explicit.\n\nFurthermore, I would argue that the terminology is part of the framework and therefore should be general.\n\nThe current definition of expression is as follows:\n\n>   Expression:  A concrete artefact (for instance: a file, header,\n>      embedded block, or metadata record) that conveys preferences,\n>      rights, terms, or other policies about a resource.\n\nHowever, this RFC should be able to apply to anything, not just preferences, rights, terms or policies.  For example, a message store can be machine readable.  Or a library catalogue.  Or a recipe.\n\nThe current definition is focusing on meta-data, but the actual resource itself can be categorised in the same way, vis-a-vis machine readability and therefore I think the definition of `Expression` should reflect that.\n\nAs a starting point, here is an alternative proposal for this term:\n\n>   Expression:  A concrete artefact (for instance: a file, header,\n>      embedded block, or metadata record) that conveys\n>      structured information.\n\nI include the word `structured` because I think that if the information is unstructured then there's no real point in discussing machine-readability, though I'm aware that even unstructured information can meet the first principle of being discoverable.\n\nI deliberately do not include `about a resource` as the information can also be the actual resource, itself.\n\nI think it could be reasonable to include a list of items, but only as exemplars not (as it appears in the current example) as if it is an exhaustive list.  I don't think it's necessary, but if you wanted to include it you could do something like:\n\n>   Expression:  A concrete artefact (for instance: a file, header,\n>      embedded block, or metadata record) that conveys\n>      structured information, for example preferences, rights\n>      terms or other policies.\n\nHowever, even with a 'for example' I feel that it implicitly limits the scope.\n\nThoughts?",
       "createdAt": "2026-07-04T00:14:06Z",
-      "updatedAt": "2026-07-21T08:13:36Z",
-      "closedAt": null,
+      "updatedAt": "2026-07-24T21:13:25Z",
+      "closedAt": "2026-07-24T15:13:47Z",
       "comments": [
         {
           "author": "coopdanger",
@@ -89,6 +97,20 @@
           "body": "Noting from the discussion at IETF 126 that there is value in maintaining the scope as \"Expressions about which the entity conveying them has an interest in the policy/preferences/etc. being conveyed.\" In other words, the one conveying the Expression is conveying it because they want others to know/act on what is being conveyed, not merely that they want machines to be able to read it.",
           "createdAt": "2026-07-21T08:13:36Z",
           "updatedAt": "2026-07-21T08:13:36Z"
+        },
+        {
+          "author": "thunderpoot",
+          "authorAssociation": "OWNER",
+          "body": "Addressed in -01. The definition is now general: \"a concrete artefact ... that conveys structured information\", with the artefact distinguished from the assertions it carries, and an explicit note that the Expression may itself be the Resource. The introduction now states that nothing in the framework is specific to any subject matter, with usage preferences and legal terms as applications of it rather than parts of it.\n\nOne deliberate divergence from the proposal: the definition keeps a second sentence naming this document's applied focus (preferences, rights, terms, policies). That's a statement of what this document is about, not a limit on the framework. If that still reads as implicitly narrowing, I'm happy to reopen.",
+          "createdAt": "2026-07-24T15:13:47Z",
+          "updatedAt": "2026-07-24T15:13:47Z"
+        },
+        {
+          "author": "appydog",
+          "authorAssociation": "NONE",
+          "body": "> One deliberate divergence from the proposal: the definition keeps a second sentence naming this document's applied focus (preferences, rights, terms, policies). That's a statement of what this document is about, not a limit on the framework. If that still reads as implicitly narrowing, I'm happy to reopen.\n\nI'm happy with the updated wording.  I think you've avoided the potential pitfall I raised, both in the definition itself; but also in the framing you've added earlier in the document.",
+          "createdAt": "2026-07-24T21:13:25Z",
+          "updatedAt": "2026-07-24T21:13:25Z"
         }
       ]
     },
@@ -97,7 +119,7 @@
       "id": "I_kwDOTI7wBc8AAAABH7kvEA",
       "title": "Add non-abuse clause: the framework defines no conformance threshold",
       "url": "https://github.com/thunderpoot/readability-draft/issues/3",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thunderpoot",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -106,16 +128,24 @@
       "labels": [],
       "body": "Laurent Le Meur raised the following on the -00:\n\n> It may still become a problem if people abuse it, claiming that no expression is machine-readable unless it clearly presents the 5 properties you define. You are speaking about steps on a ladder; is an expression machine-readable if it only climbs the first two steps? one step?\n\nSection 7 talks about the Declaring Party claiming machine readability on the strength of the weakest property but doesn't say anything about the inverse of that, in which an Agent treats the absence of higher-rung properties as licence to disregard an Expression altogether.\n\n**Proposed changes:**\n\nAdd a clause at the end of Section 4, with a pointer from Security Considerations, stating that:\n\n1. the framework defines no conformance threshold and must not be read as one;\n2. an Agent must not treat the absence of a higher-rung property as grounds to disregard an Expression that is discoverable, interpretable and actionable for the decision at hand.\n\nAlso add a note about scope saying whether a given Expression satisfies a legal requirement of machine readability (for instance under Article 4 of the EU DSM Directive)\n\n**Target:** -01 (following discussion at IETF 126 Vienna)",
       "createdAt": "2026-07-07T09:37:02Z",
-      "updatedAt": "2026-07-07T09:37:02Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-07-24T15:16:03Z",
+      "closedAt": "2026-07-24T15:16:03Z",
+      "comments": [
+        {
+          "author": "thunderpoot",
+          "authorAssociation": "OWNER",
+          "body": "Addressed in -01 with a new \"No Conformance Threshold\" section: the framework defines no threshold and must not be read as one, Agents should not disregard Expressions whose decision-relevant properties are met, and whether an Expression satisfies a legal requirement such as DSM Article 4(3) is a question of law out of scope for this document.\n\nSecurity Considerations gained the matching \"dismissal by threshold\" paragraph, cross-referenced both ways.",
+          "createdAt": "2026-07-24T15:16:03Z",
+          "updatedAt": "2026-07-24T15:16:03Z"
+        }
+      ]
     },
     {
       "number": 4,
       "id": "I_kwDOTI7wBc8AAAABH7ogEw",
       "title": "Restructure the ladder: verifiability is orthogonal",
       "url": "https://github.com/thunderpoot/readability-draft/issues/4",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thunderpoot",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -124,16 +154,24 @@
       "labels": [],
       "body": "The ladder metaphor implies that each property must be attained before the next, and leads to people thinking in terms of thresholds (see issue on the non-abuse clause #3).\n\nThere is a dependency chain among the first four properties: an Agent cannot parse what it cannot discover, cannot interpret what it cannot parse, and cannot act on what it cannot interpret. Verifiability does not sit on top of that chain, however. It governs how much trust an Agent places in an Expression, not whether the Expression can be found, parsed, understood or acted upon. \n\n**Proposed changes:**\n\nChange the model to an ordered pipeline (discoverable -> parseable -> interpretable -> actionable) with verifiability as an orthogonal trust axis that applies at each of these stages.\n\nMake the distinction explicit between actionability as capability (the Expression's semantics are determinate enough that an Agent should know exactly what behaviour is called for) and \"verifiability as warrant\" (whether the Agent is justified in trusting the assertion). Neither presupposes the other.\n\nIf the ordering remains anywhere, it should say that it isn't a scale on which Expressions accumulate points towards a \"passing grade\".\n\n**Target:** -01, following discussion at IETF 126 Vienna.",
       "createdAt": "2026-07-07T09:44:45Z",
-      "updatedAt": "2026-07-07T09:44:45Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-07-24T15:15:41Z",
+      "closedAt": "2026-07-24T15:15:41Z",
+      "comments": [
+        {
+          "author": "thunderpoot",
+          "authorAssociation": "OWNER",
+          "body": "Resolved in -01, which went further than proposed here. Rather than an ordered pipeline with verifiability as the sole orthogonal axis, -01 defines parseability and interpretability as the two core, intrinsic criteria, with discoverability, actionability, and verifiability all orthogonal dimensions (following the IETF 126 discussion). The capability/warrant distinction is retained: actionability is defined as a relation to a specific Agent, action, and context, and the Verifiable section notes that neither presupposes the other. The \"no passing grade\" point is now its own section (see #3).",
+          "createdAt": "2026-07-24T15:15:41Z",
+          "updatedAt": "2026-07-24T15:15:41Z"
+        }
+      ]
     },
     {
       "number": 5,
       "id": "I_kwDOTI7wBc8AAAABH7p2fA",
       "title": "Acknowledge provenance of well-known locations",
       "url": "https://github.com/thunderpoot/readability-draft/issues/5",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thunderpoot",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -142,8 +180,8 @@
       "labels": [],
       "body": "Mechanisms served from a well-known location (robots.txt, `/.well-known/tdmrep.json`) have an implicit (and somewhat weak) form of provenance, since publishing at that path is itself evidence that the party controlling the origin domain placed the Expression there.\n\n**Proposed change:**\n\nAdd text acknowledging origin-domain control as a weak provenance signal and note that it's still an assurance about who is speaking rather than about the clarity or validity of the instruction.\n\n**Target:** -01.",
       "createdAt": "2026-07-07T09:47:20Z",
-      "updatedAt": "2026-07-07T09:47:20Z",
-      "closedAt": null,
+      "updatedAt": "2026-07-24T15:09:30Z",
+      "closedAt": "2026-07-24T15:09:30Z",
       "comments": []
     },
     {
@@ -151,15 +189,15 @@
       "id": "I_kwDOTI7wBc8AAAABH8GA3w",
       "title": "Sections 3.4 and 4 rewording",
       "url": "https://github.com/thunderpoot/readability-draft/issues/6",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "thunderpoot",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "> An Expression that says \"use must be fair\" is interpretable but admits no definite outcome, because 'fair' is not a checkable condition\n\nchange to:\n\n> An Expression that says \"use must be fair\" might be interpretable but admits no definite outcome, because 'fair' is not a checkable condition\n\n<hr>\n\nSection 4's text:\n\n> The Robots Exclusion Protocol [[RFC9309](https://www.ietf.org/archive/id/draft-vaughan-machine-readability-00.html#RFC9309)] is both highly discoverable and parseable. It is fetched from a fixed location before any other resource, and its grammar is defined in ABNF. It is deliberately not interpretable in the rich sense used here, because its vocabulary is confined to access control (allow and disallow against paths) and carries no shared semantics for what an Agent may do with content once fetched.\n\n... is clumsy, and refers to a \"rich sense of interpretability\" which isn't properly defined.  The point is that REP signals are strongly interpretable and this bit needs rewriting.  TBC.\n\n**Target:** -01",
       "createdAt": "2026-07-07T10:48:37Z",
-      "updatedAt": "2026-07-07T10:59:37Z",
-      "closedAt": null,
+      "updatedAt": "2026-07-24T15:09:30Z",
+      "closedAt": "2026-07-24T15:09:30Z",
       "comments": [
         {
           "author": "handecelikkanat",
@@ -175,15 +213,15 @@
       "id": "I_kwDOTI7wBc8AAAABJci3UA",
       "title": "C2PA section should also reference CAWG's Training & Data Mining Assertion",
       "url": "https://github.com/thunderpoot/readability-draft/issues/7",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "lrosenthol",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "the section on C2PA's Content Credentials is well written, but does not specifically call out the [CAWG Training & Data Mining Assertion](https://cawg.io/training-and-data-mining/1.1/), which is where the rights/permissions mentioned on the other items can be found.\n",
       "createdAt": "2026-07-20T12:22:04Z",
-      "updatedAt": "2026-07-20T12:22:04Z",
-      "closedAt": null,
+      "updatedAt": "2026-07-24T15:09:29Z",
+      "closedAt": "2026-07-24T15:09:29Z",
       "comments": []
     },
     {
@@ -191,15 +229,15 @@
       "id": "I_kwDOTI7wBc8AAAABJkVPRA",
       "title": "Be explicit that LLM-style non-deterministic processing is out of scope",
       "url": "https://github.com/thunderpoot/readability-draft/issues/8",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "coopdanger",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "The document would benefit from an explicit statement that language model-based processing (or any non-deterministic processing?) is out of scope for the specification, and probably a few words about why it is out of scope.",
       "createdAt": "2026-07-21T08:44:31Z",
-      "updatedAt": "2026-07-21T08:44:31Z",
-      "closedAt": null,
+      "updatedAt": "2026-07-24T15:09:31Z",
+      "closedAt": "2026-07-24T15:09:31Z",
       "comments": []
     },
     {
@@ -207,16 +245,24 @@
       "id": "I_kwDOTI7wBc8AAAABJkbADA",
       "title": "First Capture of Side Meeting minutes",
       "url": "https://github.com/thunderpoot/readability-draft/issues/9",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "henkbirkholz",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "https://notes.ietf.org/Yc8W40X6TyeUS6eY0uW9ng?edit",
       "createdAt": "2026-07-21T08:56:38Z",
-      "updatedAt": "2026-07-21T08:56:38Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-07-24T14:40:19Z",
+      "closedAt": "2026-07-24T14:40:19Z",
+      "comments": [
+        {
+          "author": "thunderpoot",
+          "authorAssociation": "OWNER",
+          "body": "This has been added to the wiki, thank you @henkbirkholz !",
+          "createdAt": "2026-07-24T14:40:19Z",
+          "updatedAt": "2026-07-24T14:40:19Z"
+        }
+      ]
     },
     {
       "number": 10,
@@ -230,7 +276,47 @@
       "labels": [],
       "body": "a thought about the definition of parseability; wondering if \"to produce\" is more apt than \"to recover\"",
       "createdAt": "2026-07-21T20:50:32Z",
-      "updatedAt": "2026-07-21T20:50:32Z",
+      "updatedAt": "2026-07-24T15:20:36Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "thunderpoot",
+          "authorAssociation": "OWNER",
+          "body": "Thought about this one for a while. \"Produce\" is arguably more accurate about the mechanics, since the structured representation doesn't sit inside the artefact waiting to be extracted; the parser constructs it. But I think \"recover\" is doing deliberate work in the definition that \"produce\" would undo.\n\nThe test for parseability is that every conforming Agent arrives at the *same* representation. \"Recover\" implies that there's a fact of the matter fixed by the artefact and its grammar together, that the parser gets back out, and the parser has no discretion in the outcome.\n\n\"Produce\" reads as if the representation is the parser's own output, which is a bit awkward along with the requirement that two\nindependent implementations agree, things that are produced can differ, things that are recovered can't.\n\nBasically the word was chosen for the determinism rather than the mechanics, and I'm inclined to keep it. If it still seems like it's claiming the structure is literally contained in the bytes, then something like \"derives\" could be a decent compromise (\"a conforming Agent derives the same structured representation...\"), which keeps the determinism while conceding the construction. Open to that if you feel \"recover\" overclaims.",
+          "createdAt": "2026-07-24T15:20:36Z",
+          "updatedAt": "2026-07-24T15:20:36Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOTI7wBc8AAAABKFwRKg",
+      "title": "A couple of bits of feedback on draft -01",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/11",
+      "state": "OPEN",
+      "author": "appydog",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Really like the new draft.  Good work!\n\nReading through it, a couple of thoughts crossed my mind which may be worth considering/discussing:\n\nhttps://github.com/thunderpoot/readability-draft/blob/4abd8e9434fdf9d3e9858352a7cb5a5e747904f7/draft-vaughan-machine-readability.md?plain=1#L159\n\nI wonder if it's worth making the point that a single expression may refer to multiple resources?  Currently, the implication in these definitions is that there is a one-to-one mapping, but obviously this is not the case.\n\nIt's also true that a single resource may be covered by multiple independent expressions (e.g. it might be covered by a `robots.txt` file *and* a `tdmrep.json` file, for different purposes) though I don't think there is anything that implies otherwise in the current wording.  Might still be worth being explicit, though. \n\nhttps://github.com/thunderpoot/readability-draft/blob/4abd8e9434fdf9d3e9858352a7cb5a5e747904f7/draft-vaughan-machine-readability.md?plain=1#L162\n\nEarlier, you say that an expression is made up of multiple assertions, so saying that an expression may be asserted is a bit of an overlap in terminology.  It is, at once, saying that an expression can be an assertion and an expression is made up of assertions.\n\nThe current wording may or may not be technically incorrect, but it is a little confusing.\n\nhttps://github.com/thunderpoot/readability-draft/blob/4abd8e9434fdf9d3e9858352a7cb5a5e747904f7/draft-vaughan-machine-readability.md?plain=1#L165\n\nOne thought that occurs to me:  Is it necessarily true that, if a mechanism is conformant to one or more criteria, that all expressions that conform to the mechanism are also conformant to those criteria?  i.e. are the criteria necessarily inherited by the expression from the mechanism it implements?\n\nI think this is an interesting thing to consider and that it's worth taking the time to understand whether the following syllogism is always correct (and if not, why not?):\n\n    Mechanism X is machine readable for {these criteria};\n    Expression Y implements Mechanism X;\n    therefore Expression Y is machine readable for {these criteria}\"\n\nNote that this doesn't just cover parseability (which feels like it's trivially true) and interpretability (which I am less sure about) but may also cover some (all?) of the orthogonal properties, e.g. the mechanism may define some form of signing mechanism that provides verifiability; or a specific location, that provides discoverability.\n\nhttps://github.com/thunderpoot/readability-draft/blob/4abd8e9434fdf9d3e9858352a7cb5a5e747904f7/draft-vaughan-machine-readability.md?plain=1#L191\n\nFor the avoidance of doubt, I think it might be worth expressing an opinion here on whether meta-data that is contained within the resource (or which is the entirety of the resource) is considered discoverable.  The current discussion only covers the situation where the expression and the resource are separate entities.  My view is that it is, but some of the commentary on existing work implies that it might not be, under your definition.  I think this should be explicitly covered.\n\nhttps://github.com/thunderpoot/readability-draft/blob/4abd8e9434fdf9d3e9858352a7cb5a5e747904f7/draft-vaughan-machine-readability.md?plain=1#L203\n\nThere are two distinct forms of verification given here and, in practice, there may be more.  The two listed are 'the publisher of the expression is authorised to make statements about the resource' and 'the expression has not been tampered with'.  There is also at least one other; 'the publisher of the expression is who they say they are' which is related to the first type of verification but goes a bit deeper, in the same way that Domain Validated SSL certificates verify the certificate is issued by the domain holder; whilst Organisational Validated SSL certificates additionally validate that the domain holder is the organisation they claim to be.\n\nHow should these multiple forms of verification be interpreted with relation to this standard?  Is this a boolean criteria, in which case is a resource only considered 'verifiable' if it passes on all levels of verification?\n\nYour known-location examples implies that the standard recognises 'strong' and 'weak' verifiability, which may cover some of this (though should probably be a bit more explicit if that is an intended distinction, rather than just illustrative).  However, how should an expression be interpreted if it contains (for example) a checksum but no signature; or a signature but no checksum?\n\nIt feels likes this might require more nuanced handling.",
+      "createdAt": "2026-07-24T21:12:30Z",
+      "updatedAt": "2026-07-24T21:23:11Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 12,
+      "id": "I_kwDOTI7wBc8AAAABKGEvpg",
+      "title": "Add HL7 FHIR to the list of examples?",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/12",
+      "state": "OPEN",
+      "author": "appydog",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I don't know if you've come across [FHIR](https://hl7.org/fhir/) (Fast Healthcare Interoperability Resources) but it is a standard that is gaining (has gained?) widespread adoption across healthcare records.\n\n* It is strongly [pareasble](https://hl7.org/fhir/resource-formats.html); either as XML, JSON and/or RDF (Turtle), depending on the implementation.\n* It is strongly [interpretable](https://hl7.org/fhir/documentation.html) and has copious documentation.  That said, the standard is very broad and has a lot of aspects that are implementation-specific and it is expected that organisations will define the specifics of their own implementation, where necessary.  (For example, the NHS specifies [the UK Core](https://standards.nhs.uk/published-standards/uk-core-fhir-release-4-governance) to further standardise NHS resource interchange.)\n* It is strongly discoverable via a [REST-based API](https://hl7.org/fhir/http.html) which includes a [capabilities statement](https://www.hl7.org/fhir/capabilitystatement.html) in a known location which should document all other implementation details (endpoints, supported data formats, supported search parameters, etc.).\n* It is strongly actionable, for most of the uses for which it is intended (though obviously, the details are implementation-specific).  In this case, the use-cases are mostly around the sharing of healthcare information but this also links into financial/insurance systems, resource administration, etc.\n* It is partially verifiable.  It supports specifying [provenance](https://www.hl7.org/fhir/provenance.html) including [signatures](https://www.hl7.org/fhir/datatypes.html#Signature) which goes some way towards meeting the verifiability criteria, though I've yet to find any mechanism that would allow you to detect if records have been tampered with.\n\nWould this serve as a useful entry in the examples section?  I can probably write something up if you want me to, though will probably need a bit of guidance.\n\nFull disclosure: I have no affiliation whatsoever with HL7 or any other stakeholder; it's just a standard that I have a fair bit of familiarity with and which seems to align quite closely with most of the criteria for machine readability.\n",
+      "createdAt": "2026-07-24T22:03:26Z",
+      "updatedAt": "2026-07-24T22:18:20Z",
       "closedAt": null,
       "comments": []
     }
