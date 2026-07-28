@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-26T03:38:24.465336+00:00",
+  "timestamp": "2026-07-28T03:18:13.572048+00:00",
   "repo": "thunderpoot/readability-draft",
   "labels": [
     {
@@ -317,6 +317,22 @@
       "body": "I don't know if you've come across [FHIR](https://hl7.org/fhir/) (Fast Healthcare Interoperability Resources) but it is a standard that is gaining (has gained?) widespread adoption across healthcare records.\n\n* It is strongly [pareasble](https://hl7.org/fhir/resource-formats.html); either as XML, JSON and/or RDF (Turtle), depending on the implementation.\n* It is strongly [interpretable](https://hl7.org/fhir/documentation.html) and has copious documentation.  That said, the standard is very broad and has a lot of aspects that are implementation-specific and it is expected that organisations will define the specifics of their own implementation, where necessary.  (For example, the NHS specifies [the UK Core](https://standards.nhs.uk/published-standards/uk-core-fhir-release-4-governance) to further standardise NHS resource interchange.)\n* It is strongly discoverable via a [REST-based API](https://hl7.org/fhir/http.html) which includes a [capabilities statement](https://www.hl7.org/fhir/capabilitystatement.html) in a known location which should document all other implementation details (endpoints, supported data formats, supported search parameters, etc.).\n* It is strongly actionable, for most of the uses for which it is intended (though obviously, the details are implementation-specific).  In this case, the use-cases are mostly around the sharing of healthcare information but this also links into financial/insurance systems, resource administration, etc.\n* It is partially verifiable.  It supports specifying [provenance](https://www.hl7.org/fhir/provenance.html) including [signatures](https://www.hl7.org/fhir/datatypes.html#Signature) which goes some way towards meeting the verifiability criteria, though I've yet to find any mechanism that would allow you to detect if records have been tampered with.\n\nWould this serve as a useful entry in the examples section?  I can probably write something up if you want me to, though will probably need a bit of guidance.\n\nFull disclosure: I have no affiliation whatsoever with HL7 or any other stakeholder; it's just a standard that I have a fair bit of familiarity with and which seems to align quite closely with most of the criteria for machine readability.\n",
       "createdAt": "2026-07-24T22:03:26Z",
       "updatedAt": "2026-07-24T22:18:20Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOTI7wBc8AAAABKWA50Q",
+      "title": "\u00a73.2.3 Verifiable: a worked instance, and three refinements (recursion, temporal validity, adjudication)",
+      "url": "https://github.com/thunderpoot/readability-draft/issues/13",
+      "state": "OPEN",
+      "author": "ReadBridge",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The parseable/interpretable-vs-orthogonal split is a useful clarification. \u00a73.2.3's distinction between binding to the Expression and the weak \"well-known location\" provenance (robots.txt, TDMRep) is the one that matters in practice \u2014 as you note, that assurance attaches to the act of *serving*, so it survives neither redistribution nor alteration.\n\nA concrete instance of the strong form already exists on the AIPREF track (\u00a76.2): `draft-wallace-aipref-grant-binding-00` binds a rights grant to an authorised issuer as a W3C Verifiable Credential (VC-JOSE-COSE) \u2014 the issuer identifier resolves to a public key (e.g. via `did:web`), the grant is bound to the Resource by a cryptographic content digest (SHA-256), it is tamper-evident, and it is verifiable offline, carrying evidence of origin independent of where it is served (so it survives redistribution \u2014 the property \u00a73.2.3 identifies).\n\nBuilding a reference verifier for this surfaced three refinements to the *verifiable* dimension that may be worth reflecting in \u00a73.2.3:\n\n1. **Verifiability is recursive.** Origin + integrity of the Expression is not enough if validity depends on an *external* mechanism (e.g. a revocation list): that mechanism must *itself* be authenticated to the same authorised party before its output means anything. An unauthenticated status source establishes nothing. Verifiability is a property of the whole trust chain, not only the outermost signature.\n\n2. **Verifiability has a temporal axis.** An Expression that genuinely originates from an authorised party and is unaltered may nonetheless have been *revoked or expired* since signing. So verifiability of a time-sensitive assertion includes whether an Agent can establish it was valid *as of a given instant* (e.g. the moment of use), offline. This is not free: a bitstring revocation list carries no timestamps, so a *current* reading cannot prove *when* a status changed \u2014 asserting historical validity requires an authenticated, dated snapshot, and conservatism (treat as invalid) is the safe default otherwise.\n\n3. **Verifiability is not adjudication.** Even fully satisfied, the property establishes that authentic, unaltered, unrevoked-as-of-check evidence *exists* \u2014 it does not settle the underlying question (authority, competing claims, terms interpretation), which may turn on content or facts outside the Expression. This is consistent with the draft's framing that \"the Expression is the artefact rather than the assertions\": *verifiable* is a property of the artefact, not a verdict on what it asserts. Worth stating so the property is not over-read as \"true/authorised.\"\n\nFail-closed follows from (1) and (3): where origin cannot be established (e.g. an unknown signing key), verifiability *fails* rather than falling back to another key.\n\nHappy to contribute worked examples (offline fixtures, cross-runtime) if useful.\n",
+      "createdAt": "2026-07-27T14:45:44Z",
+      "updatedAt": "2026-07-27T14:45:44Z",
       "closedAt": null,
       "comments": []
     }
