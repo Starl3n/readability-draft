@@ -176,7 +176,9 @@ Assessment against this framework therefore yields a profile rather than a score
 
 ### Parseable {#parseable}
 
-An Expression is parseable if its syntax is defined such that a conforming Agent recovers the same structured representation from it that any other conforming Agent would.  A test for this would be whether there is a grammar or schema against which the Expression is valid or invalid, deterministically.  Parseability is a property of the Expression and its grammar alone, and can be assessed with no knowledge of the Expression's consumers.  A terms-of-service document carried in a JSON string is a useful case about which to be precise: the JSON envelope is valid against a grammar and every conforming Agent recovers the same envelope, but the terms inside it recover only as an opaque string, with no grammar of their own.  Wrapping prose in a parseable container does not make the prose parseable, and this is the characteristic most often mistaken for machine readability as a whole.
+An Expression is parseable if its syntax is defined such that a conforming Agent recovers the same structured representation from it that any other conforming Agent would.  A test for this would be whether there is a grammar or schema against which the Expression is valid or invalid, deterministically.  Parseability is a property of the Expression and its grammar alone, and can be assessed with no knowledge of the Expression's consumers.  A terms-of-service document carried in a JSON string is a useful case about which to be precise: the JSON envelope is valid against a grammar and every conforming Agent recovers the same envelope, but the terms inside it recover only as an opaque string, with no grammar of their own.  Wrapping prose in a parseable container does not make the prose parseable, and this is the characteristic most often mistaken for machine readability as a whole. 
+
+A property satisfied by a containing Expression is not thereby satisfied by its contained content; each layer's properties are assessed at that layer. Conversely, a contained failure does not defeat the container's own properties. Recovery is binary: a conforming Agent recovers the representation exactly or fails entirely; there is no degree of parse.
 
 ### Interpretable {#interpretable}
 
@@ -194,7 +196,7 @@ An Expression is discoverable if an Agent can locate it from the Resource, or fr
 
 ### Actionable {#actionable}
 
-An Expression is actionable, for a given Agent and a given pending action, if the interpreted Expression determines a definite outcome for that action (like "permitted", "forbidden", or something like "conditional-based-on-a-checkable-condition") without recourse to a human.  A test for this could be whether the Agent can map the interpreted Expression onto its specific pending action and get an answer.
+An Expression is actionable, for a given Agent and a given pending action, assessed against the Expression as held at the moment of the action, if the interpreted Expression determines a definite outcome for that action (like "permitted", "forbidden", or something like "conditional-based-on-a-checkable-condition") without recourse to a human.  A test for this could be whether the Agent can map the interpreted Expression onto its specific pending action and get an answer.
 
 Unlike the core criteria, actionability is not intrinsic to the Expression: it is a relation between the Expression and a consumer's circumstances, and the same Expression may be actionable for one Agent and not for another.  "Training forbidden" is actionable against the action "train" and silent against the action "index".  The scope of application is part of the same relation: an Expression may determine an outcome for a Resource as a whole while determining none for an excerpt or a derivative of it.  An Expression that says "use must be fair" might be interpretable, but it is actionable for no Agent, because 'fair' is not a checkable condition.
 
@@ -202,17 +204,19 @@ Unlike the core criteria, actionability is not intrinsic to the Expression: it i
 
 ### Verifiable {#verifiable}
 
-An Expression is verifiable if an Agent can establish that it genuinely originates from a party authorised to make assertions about the Resource, and that it has not been altered.  A test for this could be whether there is a mechanism binding the Expression to an authorised Declaring Party and detecting tampering.  Verifiability is independent of the rest: an Expression may be signed and bound to its Declaring Party while remaining prose no machine can act on, and a perfectly interpretable Expression may carry no evidence of origin at all.
+An Expression is verifiable if an Agent can establish that it genuinely originates from a party authorised to make assertions about the Resource, and that it has not been altered.  A test for this could be whether there is a mechanism binding the Expression to an authorised Declaring Party and detecting tampering.  Verifiability is independent of the rest: an Expression may be signed and bound to its Declaring Party while remaining prose no machine can act on, and a perfectly interpretable Expression may carry no evidence of origin at all. Verification requires an attestation independent of the Expression itself; a claim within an Expression that the Expression is authentic is not verification.
+
+An Agent SHOULD be able to establish that an Expression is the current governing version; superseded versions SHOULD remain retrievable.
 
 There is a weak, implicit form of provenance short of this.  A Mechanism served from a well-known location, like robots.txt or TDMRep's `/.well-known/tdmrep.json`, carries some evidence of origin in the act of publication itself, since placing a file at that path is something only a party controlling the origin can do.  This is an assurance about who is speaking, to the extent that control of a domain identifies a party; it says nothing about the clarity or validity of what is said.  It also attaches to the act of serving rather than to the Expression, and so it neither survives redistribution of the Resource nor detects alteration.
 
 ## No Conformance Threshold {#no-threshold}
 
-This framework defines no conformance threshold, and it must not be read as one.  There is no number of satisfied properties at which an Expression becomes "machine readable", and none whose absence makes it not so.  The properties describe what an Expression provides; what an Agent requires depends on the decision before it.
+This framework defines no conformance threshold, and it must not be read as one.  There is no number of satisfied properties at which an Expression becomes "machine readable", and none whose absence makes it not so.  The properties describe what an Expression provides; what an Agent requires depends on the decision before it. Each property implies an accountable party; to those who fix the vocabulary, who signs, who deploys discovery. An Expression whose interpretive vocabulary has no identified maintainer is unaccountably interpretable; ambiguity of absence is, structurally, absence of accountability.
 
 The threshold reading can be abused from both sides.  A Declaring Party may claim machine readability on the strength of the cheapest property, typically parseability, while failing the ones that matter for the consumer's decision; the survey in {{existing}} and the discussion in {{requirements-for-legal-terms}} are largely about that direction.  In the other direction, an Agent may disregard an Expression on the ground that some property is unsatisfied even though the properties its decision actually depends upon are met.  An unverifiable reservation that is discoverable, parseable, interpretable, and actionable for the pending action still communicates the Declaring Party's position; the absence of verifiability changes what the Agent can prove about the Expression, not what was asserted.  {{security-considerations}} discusses both hazards.
 
-Whether an Expression satisfies a legal requirement of machine readability, such as the reservation "in an appropriate manner, such as machine-readable means" contemplated by Article 4(3) of the EU's Digital Single Market copyright directive {{DSM}}, is a question of law on which this document takes no position.
+Whether an Expression satisfies a legal requirement of machine readability, such as the reservation "in an appropriate manner, such as machine-readable means" contemplated by Article 4(3) of the EU's Digital Single Market copyright directive {{DSM}}, is a question of law on which this document takes no position. 
 
 # Independence in Practice {#independence}
 
@@ -222,7 +226,7 @@ The Robots Exclusion Protocol {{RFC9309}} is highly discoverable and parseable: 
 
 Conversely, a cryptographic provenance Expression may be verifiable and parseable while saying nothing about usage permissions at all, and so contribute nothing towards actionability for a usage decision.
 
-The value of the framework is diagnostic in that it lets one state precisely which properties a given mechanism's Expressions provide and, more importantly, which they do not, rather than asserting that a mechanism is or is not "machine readable" as an undifferentiated whole.
+The value of the framework is diagnostic in that it lets one state precisely which properties a given mechanism's Expressions provide and, more importantly, which they do not, rather than asserting that a mechanism is or is not "machine readable" as an undifferentiated whole. The properties are independent binary closures, not additive quantities; partial credit implies a scale that satisfaction does not possess.
 
 # Requirements for Legal Terms {#requirements-for-legal-terms}
 
@@ -231,6 +235,8 @@ The properties of {{criteria}} are general, but legal terms of service are where
 At crawl scale this ceases to be a nuisance and becomes a barrier.  An Agent operating across the web encounters resources in numbers that make per-resource interpretation of natural-language terms infeasible as part of fetching them.  No stage of a crawl pipeline can read a terms-of-service document, written for human readers and varying from one site to the next, quickly enough, reliably enough, and cheaply enough to decide the fetch.  A mechanism that demands this does not describe a workable system.  It describes a human reading legalese, repeated some billions of times.  What works at that scale is low-context communication: an Expression that carries everything the Agent needs, fixed against shared definitions, rather than one whose meaning must be recovered from surrounding context at the moment of consumption.
 
 It is sometimes proposed that a large language model (LLM) could close the gap, reading the terms at scale and reporting what they permit.  Such an approach must not be relied upon for usage decisions.  A language model does not determine what a document permits.  It produces text resembling that determination, and it does so with a well-documented tendency to hallucinate or fabricate.  A crawler that fetches or declines a Resource on the strength of a model's reading of prose is making an access decision from output that may be confidently wrong, and cannot be checked against the source without the very human reading it was meant to replace.  Wrapping the prose in a structured form changes none of this.  The wrapper is parseable, but it does not render the terms inside it actionable.
+
+A model's reading of an Expression is an attestation by the reading party, not a property of the Expression.
 
 # Relationship to Existing Work {#existing}
 
